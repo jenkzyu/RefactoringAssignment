@@ -1,9 +1,9 @@
 
 import java.awt.*;
-
+import javax.swing.JFileChooser;
 import java.awt.event.*;
 import java.util.ArrayList;
-
+import java.io.*;
 import javax.swing.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,10 +14,11 @@ import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Scanner;
 
 public class Menu extends JFrame {
 
-	private ArrayList<Customer> customerList = new ArrayList<Customer>();
+	private static ArrayList<Customer> customerList = new ArrayList<Customer>();
 	private int position = 0;
 	private String password;
 	private Customer customer = null;
@@ -33,10 +34,56 @@ public class Menu extends JFrame {
 	JPanel panel2;
 	JButton add;
 	String PPS, firstName, surname, DOB, CustomerID;
+	static String pps, surName, firstname, dob, passWord;
+	static String customerID = "";
 
 	public static void main(String[] args) {
 		Menu driver = new Menu();
+
+		readFromFile();
+
 		driver.menuStart();
+	}
+
+	private static void readFromFile() {
+		ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
+		// Read from file
+		try {
+			Scanner file = new Scanner(new File("C:/refactoring/customerInfo.txt"));
+			while (file.hasNextLine()) {
+				String data = file.nextLine();
+				if (data.contains("PPS number")) {
+					String[] split = data.split("= ");
+					pps = split[1];
+					System.out.println(pps);
+				} else if (data.contains("Surname")) {
+					String[] split1 = data.split("= ");
+					surName = split1[1];
+					System.out.println(surName);
+				} else if (data.contains("First Name")) {
+					String[] split2 = data.split("= ");
+					firstname = split2[1];
+					System.out.println(firstname);
+				} else if (data.contains("Date of Birth")) {
+					String[] split3 = data.split("= ");
+					dob = split3[1];
+					System.out.println(dob);
+				} else if (data.contains("Customer ID")) {
+					String[] split4 = data.split("= ");
+					customerID = split4[1];
+					System.out.println(customerID);
+				} else if (data.contains("Password")) {
+					String[] split5 = data.split("= ");
+					passWord = split5[1];
+					System.out.println(passWord);
+				}
+				customerList.add(new Customer(pps, surName, firstname, dob, customerID, passWord, accounts));
+			}
+			file.close();
+		} catch (FileNotFoundException fileNotFound) {
+			fileNotFound.printStackTrace();
+		}
+
 	}
 
 	public void menuStart() {
@@ -79,13 +126,13 @@ public class Menu extends JFrame {
 		content.setLayout(new GridLayout(2, 1));
 		content.add(userTypePanel);
 		content.add(continuePanel);
-		//HARD CODE TEST// to create instance without inputting new customer(s) 
-		ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
-		ArrayList<AccountTransaction> trans = new ArrayList<AccountTransaction>();
-		CustomerAccount depo= new CustomerDepositAccount(1.5, "ID123", 0.0, trans);
-		accounts.add(depo);
-		Customer cust  = new Customer("123", "Yu", "Jenkin", "1234", "ID123", "passwor", accounts);
-		customerList.add(cust);
+		// HARD CODE TEST// to create instance without inputting new customer(s)
+//		ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
+//		ArrayList<AccountTransaction> trans = new ArrayList<AccountTransaction>();
+//		CustomerAccount depo = new CustomerDepositAccount(1.5, "ID123", 0.0, trans);
+//		accounts.add(depo);
+//		Customer cust = new Customer("123", "Yu", "Jenkin", "1234", "ID123", "passwor", accounts);
+//		customerList.add(cust);
 		/////////////////////
 		continueButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -138,36 +185,77 @@ public class Menu extends JFrame {
 
 							CustomerID = "ID" + PPS;
 
-							add.addActionListener(new ActionListener() {
-								public void actionPerformed(ActionEvent e) {
-									f1.dispose();
+							ArrayList<String> custID = new ArrayList<String>();
+							// got rid of the add to avoid clicking twice
+//							add.addActionListener(new ActionListener() {
+//								public void actionPerformed(ActionEvent e) {
+							f1.dispose();
 
-									boolean loop = true;
-									while (loop) {
-										password = JOptionPane.showInputDialog(f, "Enter 7 character Password;");
+							boolean loop = true;
+							while (loop) {
+								password = JOptionPane.showInputDialog(f, "Enter 7 character Password;");
 
-										if (password.length() != 7)// Making sure password is 7 characters
-										{
-											JOptionPane.showMessageDialog(null, null,
-													"Password must be 7 charatcers long", JOptionPane.OK_OPTION);
-										} else {
-											loop = false;
-										}
-									}
-
-									ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
-									Customer customer = new Customer(PPS, surname, firstName, DOB, CustomerID, password,
-											accounts);
-
-									customerList.add(customer);
-
-									JOptionPane.showMessageDialog(f,
-											"CustomerID = " + CustomerID + "\n Password = " + password,
-											"Customer created.", JOptionPane.INFORMATION_MESSAGE);
-									menuStart();
-									//f.dispose(); // got rid of this because it destroys the main frame will result on null instance.
+								if (password.length() != 7)// Making sure password is 7 characters
+								{
+									JOptionPane.showMessageDialog(null, null, "Password must be 7 charatcers long",
+											JOptionPane.OK_OPTION);
+								} else {
+									loop = false;
 								}
-							});
+							}
+							// Read from file
+							try {
+								File readFile = new File("C:/refactoring/customerID.txt");
+								Scanner scan = new Scanner(readFile);
+								while (scan.hasNextLine()) {
+									String data = scan.nextLine();
+									custID.add(data);
+								}
+
+								scan.close();
+							} catch (FileNotFoundException fileNotFound) {
+								fileNotFound.printStackTrace();
+
+							}
+							// validation if user already exists.
+							if (!custID.contains(CustomerID)) {
+								ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
+								Customer customer = new Customer(PPS, surname, firstName, DOB, CustomerID, password,
+										accounts);
+								customerList.add(customer);
+								// write to file
+								try {
+									// add customerID to file
+									FileWriter myWriter = new FileWriter("C:/refactoring/customerID.txt", true);
+									myWriter.write(customer.getCustomerID() + "\n");
+									myWriter.close();
+									// write to customerInfo to store all info of customer
+									FileWriter details = new FileWriter("C:/refactoring/customerInfo.txt", true);
+									details.write(customer.toString());
+									details.close();
+									System.out.println("Successfully wrote to the file.");
+
+								} catch (IOException exception) {
+									System.out.println("An error occurred.");
+									exception.printStackTrace();
+								}
+
+								JOptionPane.showMessageDialog(f,
+										"CustomerID = " + CustomerID + "\n Password = " + password, "Customer created.",
+										JOptionPane.INFORMATION_MESSAGE);
+
+								menuStart();
+							} else {
+								JOptionPane.showMessageDialog(f, "Customer already exists.", "Error",
+										JOptionPane.INFORMATION_MESSAGE);
+
+								menuStart();
+
+							}
+							// f.dispose(); // got rid of this because it destroys the main frame will
+							// result on null instance.
+//								}
+//							});
 						}
 					});
 					JButton cancel = new JButton("Cancel");
@@ -192,7 +280,9 @@ public class Menu extends JFrame {
 
 				// if user select
 				// ADMIN----------------------------------------------------------------------------------------------
-				if (user.equals("Administrator")) {
+				if (user.equals("Administrator"))
+
+				{
 					boolean loop = true, loop2 = true;
 					boolean cont = false;
 					while (loop) {
@@ -236,7 +326,7 @@ public class Menu extends JFrame {
 					}
 
 					if (cont) {
-						f.dispose();
+						f.dispose(); // fix
 						loop = false;
 						admin();
 					}
@@ -360,6 +450,11 @@ public class Menu extends JFrame {
 		summaryPanel.add(summaryButton);
 		summaryButton.setPreferredSize(new Dimension(250, 20));
 
+		JPanel overdraftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JButton overdraftButton = new JButton("Update Overdraft of a Customer");
+		overdraftPanel.add(overdraftButton);
+		overdraftButton.setPreferredSize(new Dimension(250, 20));
+
 		JPanel accountPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JButton accountButton = new JButton("Add an Account to a Customer");
 		accountPanel.add(accountButton);
@@ -372,10 +467,11 @@ public class Menu extends JFrame {
 		JLabel label1 = new JLabel("Please select an option");
 
 		content = f.getContentPane();
-		content.setLayout(new GridLayout(9, 1));
+		content.setLayout(new GridLayout(10, 1));
 		content.add(label1);
 		content.add(accountPanel);
 		content.add(bankChargesPanel);
+		content.add(overdraftPanel);
 		content.add(interestPanel);
 		content.add(editCustomerPanel);
 		content.add(navigatePanel);
@@ -492,6 +588,148 @@ public class Menu extends JFrame {
 											acc.setBalance(acc.getBalance() - 25);
 											JOptionPane.showMessageDialog(f, "New balance = " + acc.getBalance(),
 													"Success!", JOptionPane.INFORMATION_MESSAGE);
+										}
+
+										f.dispose();
+										admin();
+									}
+								});
+
+								returnButton.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent ae) {
+										f.dispose();
+										menuStart();
+									}
+								});
+
+							}
+						}
+					}
+				}
+
+			}
+		});
+
+		// overdraft button
+		overdraftButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+
+				boolean loop = true;
+
+				boolean found = false;
+
+				if (customerList.isEmpty()) {
+					JOptionPane.showMessageDialog(f, "There are no customers yet!", "Oops!",
+							JOptionPane.INFORMATION_MESSAGE);
+					f.dispose();
+					admin();
+
+				} else {
+					while (loop) {
+						Object customerID = JOptionPane.showInputDialog(f,
+								"Customer ID of Customer You Wish to Apply Overdraft to:");
+
+						for (Customer aCustomer : customerList) {
+
+							if (aCustomer.getCustomerID().equals(customerID)) {
+								found = true;
+								customer = aCustomer;
+								loop = false;
+							}
+						}
+
+						if (found == false) {
+							int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
+									JOptionPane.YES_NO_OPTION);
+							if (reply == JOptionPane.YES_OPTION) {
+								loop = true;
+							} else if (reply == JOptionPane.NO_OPTION) {
+								f.dispose();
+								loop = false;
+
+								admin();
+							}
+						} else {
+							f.dispose();
+							f = new JFrame("Administrator Menu");
+							f.setSize(400, 300);
+							f.setLocation(200, 200);
+							f.addWindowListener(new WindowAdapter() {
+								public void windowClosing(WindowEvent we) {
+									System.exit(0);
+								}
+							});
+							f.setVisible(true);
+
+							JComboBox<String> box = new JComboBox<String>();
+							for (int i = 0; i < customer.getAccounts().size(); i++) {
+								if (customer.getAccounts().get(i) instanceof CustomerCurrentAccount) {
+									box.addItem(customer.getAccounts().get(i).getNumber());
+								}
+							}
+
+							box.getSelectedItem();
+
+							JPanel boxPanel = new JPanel();
+							boxPanel.add(box);
+
+							JPanel buttonPanel = new JPanel();
+							JButton continueButton = new JButton("Apply Overdraft");
+							JButton returnButton = new JButton("Return");
+							buttonPanel.add(continueButton);
+							buttonPanel.add(returnButton);
+							Container content = f.getContentPane();
+							content.setLayout(new GridLayout(2, 1));
+
+							content.add(boxPanel);
+							content.add(buttonPanel);
+
+							if (customer.getAccounts().isEmpty()) {
+								JOptionPane.showMessageDialog(f,
+										"This customer has no accounts! \n The admin must add acounts to this customer.",
+										"Oops!", JOptionPane.INFORMATION_MESSAGE);
+								f.dispose();
+								admin();
+							} else {
+
+								for (int i = 0; i < customer.getAccounts().size(); i++) {
+									if (customer.getAccounts().get(i).getNumber() == box.getSelectedItem()) {
+										acc = customer.getAccounts().get(i);
+									}
+								}
+
+								continueButton.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent ae) {
+										// String euro = "\u20ac";
+										// add overdraft input
+										double overdraft = 0;
+										boolean validInput = true;
+
+										if (acc instanceof CustomerCurrentAccount) {
+											while (validInput) {
+												String inputOverdraft = JOptionPane.showInputDialog(null,
+														"Please input overdraft.");
+												// Making sure that user only inputs and takes number. Regex
+												// [StackOverflow] any
+												// number + an optional decimal number
+												// but can still take any number
+												if (!inputOverdraft.matches("[0-9]*\\.?[0-9]*$"))// Making sure password
+																									// is 7
+																									// characters
+												{
+													JOptionPane.showMessageDialog(null, "Please input overdraft",
+															"Error", JOptionPane.OK_OPTION);
+												} else {
+													validInput = false;
+													overdraft = Double.parseDouble(inputOverdraft);
+													((CustomerCurrentAccount) acc).setOverdraft(overdraft);
+													JOptionPane.showMessageDialog(f,
+															"New overdraft = "
+																	+ ((CustomerCurrentAccount) acc).getOverdraft(),
+															"Success!", JOptionPane.INFORMATION_MESSAGE);
+												}
+											}
+
 										}
 
 										f.dispose();
@@ -1065,6 +1303,26 @@ public class Menu extends JFrame {
 								// create current account
 								boolean valid = true;
 								double balance = 0;
+								// add overdraft input
+								double overdraft = 0;
+								boolean validInput = true;
+								while (validInput) {
+									String inputOverdraft = JOptionPane.showInputDialog(null,
+											"Please input overdraft.");
+									// Making sure that user only inputs and takes number. Regex [StackOverflow] any
+									// number + an optional decimal number
+									// but can still take any number
+									if (!inputOverdraft.matches("[0-9]*\\.?[0-9]*$"))// Making sure password is 7
+																						// characters
+									{
+										JOptionPane.showMessageDialog(null, "Please input overdraft", "Error",
+												JOptionPane.OK_OPTION);
+									} else {
+										validInput = false;
+										overdraft = Double.parseDouble(inputOverdraft);
+									}
+								}
+
 								String number = String.valueOf("C" + (customerList.indexOf(customer) + 1) * 10
 										+ (customer.getAccounts().size() + 1));// this simple algorithm generates the
 																				// account number
@@ -1074,11 +1332,14 @@ public class Menu extends JFrame {
 
 								ATMCard atm = new ATMCard(randomPIN, valid);
 
-								CustomerCurrentAccount current = new CustomerCurrentAccount(atm, number, balance,
-										transactionList);
+								CustomerCurrentAccount current = new CustomerCurrentAccount(atm, overdraft, number,
+										balance, transactionList);
 
 								customer.getAccounts().add(current);
-								JOptionPane.showMessageDialog(f, "Account number = " + number + "\n PIN = " + pin,
+								// show overdraft when admin adds an overdraft to the current account + balance.
+								JOptionPane.showMessageDialog(f,
+										"Account number = " + number + "\n PIN = " + pin + "\n Balance = " + balance
+												+ "\n Overdraft = " + overdraft,
 										"Account created.", JOptionPane.INFORMATION_MESSAGE);
 
 								f.dispose();
@@ -1510,14 +1771,39 @@ public class Menu extends JFrame {
 											"Oops!", JOptionPane.INFORMATION_MESSAGE);
 									withdraw = 0;
 								}
-								if (withdraw > acc.getBalance()) {
-									JOptionPane.showMessageDialog(f, "Insufficient funds.", "Oops!",
-											JOptionPane.INFORMATION_MESSAGE);
-									withdraw = 0;
+								// if the account is a Current Account
+								if (acc instanceof CustomerCurrentAccount) {
+									if (withdraw > acc.getBalance() + ((CustomerCurrentAccount) acc).getOverdraft()) {
+										JOptionPane.showMessageDialog(f, "Insufficient funds overdraft amount exceeded.", "Error",
+												JOptionPane.INFORMATION_MESSAGE);
+										((CustomerCurrentAccount) acc).setOverdraft(withdraw);
+									}
+								} else {
+									if (withdraw > acc.getBalance()) {
+										JOptionPane.showMessageDialog(f, "Insufficient funds.", "Oops!",
+												JOptionPane.INFORMATION_MESSAGE);
+										withdraw = 0;
+									}
 								}
 
 								String euro = "\u20ac";
-								acc.setBalance(acc.getBalance() - withdraw);
+								// using Overdraft to withdraw
+								if (acc instanceof CustomerCurrentAccount) {
+									if (acc.getBalance() == 0) {
+										if (withdraw < ((CustomerCurrentAccount) acc).getOverdraft()) {
+											((CustomerCurrentAccount) acc).setOverdraft(
+													((CustomerCurrentAccount) acc).getOverdraft() - withdraw);
+											JOptionPane.showMessageDialog(f,
+													"New balance = " + acc.getBalance() + euro + "\nOverdraft = "
+															+ ((CustomerCurrentAccount) acc).getOverdraft(),
+													"Withdraw", JOptionPane.INFORMATION_MESSAGE);
+
+									} else {
+										acc.setBalance(acc.getBalance() - withdraw);
+									}
+								} else {
+									acc.setBalance(acc.getBalance() - withdraw);
+								}
 								// recording transaction:
 								// String date = new
 								// SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
@@ -1532,8 +1818,10 @@ public class Menu extends JFrame {
 
 								JOptionPane.showMessageDialog(f, withdraw + euro + " withdrawn.", "Withdraw",
 										JOptionPane.INFORMATION_MESSAGE);
-								JOptionPane.showMessageDialog(f, "New balance = " + acc.getBalance() + euro, "Withdraw",
-										JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(f,
+										"New balance = " + acc.getBalance() + euro + "\nOverdraft = "
+												+ ((CustomerCurrentAccount) acc).getOverdraft(),
+										"Withdraw", JOptionPane.INFORMATION_MESSAGE);
 							}
 
 						}
