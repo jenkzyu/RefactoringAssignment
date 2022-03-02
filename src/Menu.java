@@ -1,6 +1,5 @@
 
 import java.awt.*;
-import javax.swing.JFileChooser;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.io.*;
@@ -34,7 +33,11 @@ public class Menu extends JFrame {
 	JPanel panel2;
 	JButton add;
 	String PPS, firstName, surname, DOB, CustomerID;
-	static String pps, surName, firstname, dob, passWord;
+	static String pps = "";
+	static String surName = "";
+	static String firstname = "";
+	static String dob = "";
+	static String passWord = "";
 	static String customerID = "";
 
 	public static void main(String[] args) {
@@ -47,6 +50,7 @@ public class Menu extends JFrame {
 
 	private static void readFromFile() {
 		ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
+
 		// Read from file
 		try {
 			Scanner file = new Scanner(new File("C:/refactoring/customerInfo.txt"));
@@ -55,29 +59,44 @@ public class Menu extends JFrame {
 				if (data.contains("PPS number")) {
 					String[] split = data.split("= ");
 					pps = split[1];
-					System.out.println(pps);
+					// System.out.println(pps);
 				} else if (data.contains("Surname")) {
 					String[] split1 = data.split("= ");
 					surName = split1[1];
-					System.out.println(surName);
+					// System.out.println(surName);
 				} else if (data.contains("First Name")) {
 					String[] split2 = data.split("= ");
 					firstname = split2[1];
-					System.out.println(firstname);
+					// System.out.println(firstname);
 				} else if (data.contains("Date of Birth")) {
 					String[] split3 = data.split("= ");
 					dob = split3[1];
-					System.out.println(dob);
+					// System.out.println(dob);
 				} else if (data.contains("Customer ID")) {
 					String[] split4 = data.split("= ");
 					customerID = split4[1];
-					System.out.println(customerID);
+					// System.out.println(customerID);
 				} else if (data.contains("Password")) {
 					String[] split5 = data.split("= ");
 					passWord = split5[1];
-					System.out.println(passWord);
+					// System.out.println(passWord);
 				}
-				customerList.add(new Customer(pps, surName, firstname, dob, customerID, passWord, accounts));
+
+				if (!pps.isEmpty() && !surName.isEmpty() && !firstname.isEmpty() && !dob.isEmpty()
+						&& !customerID.isEmpty() && !passWord.isEmpty()) {
+					customerList.add(new Customer(pps, surName, firstname, dob, customerID, passWord, accounts));
+
+					pps = "";
+					surName = "";
+					firstname = "";
+					dob = "";
+					customerID = "";
+					passWord = "";
+
+				} else {
+					// do nothing
+				}
+
 			}
 			file.close();
 		} catch (FileNotFoundException fileNotFound) {
@@ -137,7 +156,6 @@ public class Menu extends JFrame {
 		continueButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				String user = userType.getSelection().getActionCommand();
-
 				// if user selects NEW
 				// CUSTOMER--------------------------------------------------------------------------------------
 				if (user.equals("New Customer")) {
@@ -189,6 +207,24 @@ public class Menu extends JFrame {
 							// got rid of the add to avoid clicking twice
 //							add.addActionListener(new ActionListener() {
 //								public void actionPerformed(ActionEvent e) {
+
+//							boolean validateString = true;
+//							while (validateString) {
+//								// password = JOptionPane.showInputDialog(f, "Enter 7 character Password;");
+//
+//								if (firstNameTextField.getText().length() > 20)
+//								{
+//									//validateString = false;
+//									JOptionPane.showMessageDialog(null, null, "Firstname must not exceed 20 charatcers long",
+//											JOptionPane.OK_OPTION);
+//									menuStart();
+////									validateString = false;
+//								} else {
+//									 validateString = false;
+//									
+//								}
+//							}
+
 							f1.dispose();
 
 							boolean loop = true;
@@ -396,10 +432,14 @@ public class Menu extends JFrame {
 						customer(customer);
 					}
 				}
+
 				// -----------------------------------------------------------------------------------------------------------------------
 			}
+
 		});
+
 		f.setVisible(true);
+
 	}
 
 	public void admin() {
@@ -1111,7 +1151,7 @@ public class Menu extends JFrame {
 					admin();
 				} else {
 
-					JButton first, previous, next, last, cancel;
+					JButton first, previous, next, last, cancel, listAll, findAccNum, findBySurname;
 					JPanel gridPanel, buttonPanel, cancelPanel;
 
 					Container content = getContentPane();
@@ -1140,6 +1180,9 @@ public class Menu extends JFrame {
 					next = new JButton("Next");
 					last = new JButton("Last");
 					cancel = new JButton("Cancel");
+					listAll = new JButton("List all Customer");
+					findAccNum = new JButton("Find By Account Number");
+					findBySurname = new JButton("Find By Surname");
 
 					firstNameTextField.setText(customerList.get(0).getFirstName());
 					surnameTextField.setText(customerList.get(0).getSurname());
@@ -1172,21 +1215,26 @@ public class Menu extends JFrame {
 					buttonPanel.add(previous);
 					buttonPanel.add(next);
 					buttonPanel.add(last);
-
+					buttonPanel.add(listAll);
+					buttonPanel.add(findAccNum);
+					buttonPanel.add(findBySurname);
 					cancelPanel.add(cancel);
 
 					content.add(gridPanel, BorderLayout.NORTH);
 					content.add(buttonPanel, BorderLayout.CENTER);
 					content.add(cancelPanel, BorderLayout.AFTER_LAST_LINE);
+
 					first.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
 							position = 0;
-							firstNameTextField.setText(customerList.get(0).getFirstName());
-							surnameTextField.setText(customerList.get(0).getSurname());
-							pPSTextField.setText(customerList.get(0).getPPS());
-							dOBTextField.setText(customerList.get(0).getDOB());
-							customerIDTextField.setText(customerList.get(0).getCustomerID());
-							passwordTextField.setText(customerList.get(0).getPassword());
+							customersInfo(firstNameTextField, surnameTextField, pPSTextField, dOBTextField,
+									customerIDTextField, passwordTextField, position);
+//							firstNameTextField.setText(customerList.get(0).getFirstName());
+//							surnameTextField.setText(customerList.get(0).getSurname());
+//							pPSTextField.setText(customerList.get(0).getPPS());
+//							dOBTextField.setText(customerList.get(0).getDOB());
+//							customerIDTextField.setText(customerList.get(0).getCustomerID());
+//							passwordTextField.setText(customerList.get(0).getPassword());
 						}
 					});
 
@@ -1197,15 +1245,12 @@ public class Menu extends JFrame {
 								// don't do anything
 							} else {
 								position = position - 1;
+								customersInfo(firstNameTextField, surnameTextField, pPSTextField, dOBTextField,
+										customerIDTextField, passwordTextField, position);
 
-								firstNameTextField.setText(customerList.get(position).getFirstName());
-								surnameTextField.setText(customerList.get(position).getSurname());
-								pPSTextField.setText(customerList.get(position).getPPS());
-								dOBTextField.setText(customerList.get(position).getDOB());
-								customerIDTextField.setText(customerList.get(position).getCustomerID());
-								passwordTextField.setText(customerList.get(position).getPassword());
 							}
 						}
+
 					});
 
 					next.addActionListener(new ActionListener() {
@@ -1215,13 +1260,9 @@ public class Menu extends JFrame {
 								// don't do anything
 							} else {
 								position = position + 1;
-
-								firstNameTextField.setText(customerList.get(position).getFirstName());
-								surnameTextField.setText(customerList.get(position).getSurname());
-								pPSTextField.setText(customerList.get(position).getPPS());
-								dOBTextField.setText(customerList.get(position).getDOB());
-								customerIDTextField.setText(customerList.get(position).getCustomerID());
-								passwordTextField.setText(customerList.get(position).getPassword());
+								
+								customersInfo(firstNameTextField, surnameTextField, pPSTextField, dOBTextField,
+										customerIDTextField, passwordTextField, position);
 							}
 
 						}
@@ -1229,15 +1270,10 @@ public class Menu extends JFrame {
 
 					last.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
-
 							position = customerList.size() - 1;
-
-							firstNameTextField.setText(customerList.get(position).getFirstName());
-							surnameTextField.setText(customerList.get(position).getSurname());
-							pPSTextField.setText(customerList.get(position).getPPS());
-							dOBTextField.setText(customerList.get(position).getDOB());
-							customerIDTextField.setText(customerList.get(position).getCustomerID());
-							passwordTextField.setText(customerList.get(position).getPassword());
+							
+							customersInfo(firstNameTextField, surnameTextField, pPSTextField, dOBTextField,
+									customerIDTextField, passwordTextField, position);
 						}
 					});
 
@@ -1248,7 +1284,7 @@ public class Menu extends JFrame {
 						}
 					});
 					setContentPane(content);
-					setSize(400, 300);
+					setSize(400, 350);
 					setVisible(true);
 				}
 			}
@@ -1774,7 +1810,8 @@ public class Menu extends JFrame {
 								// if the account is a Current Account
 								if (acc instanceof CustomerCurrentAccount) {
 									if (withdraw > acc.getBalance() + ((CustomerCurrentAccount) acc).getOverdraft()) {
-										JOptionPane.showMessageDialog(f, "Insufficient funds overdraft amount exceeded.", "Error",
+										JOptionPane.showMessageDialog(f,
+												"Insufficient funds overdraft amount exceeded.", "Error",
 												JOptionPane.INFORMATION_MESSAGE);
 										((CustomerCurrentAccount) acc).setOverdraft(withdraw);
 									}
@@ -1798,11 +1835,12 @@ public class Menu extends JFrame {
 															+ ((CustomerCurrentAccount) acc).getOverdraft(),
 													"Withdraw", JOptionPane.INFORMATION_MESSAGE);
 
+										} else {
+											acc.setBalance(acc.getBalance() - withdraw);
+										}
 									} else {
 										acc.setBalance(acc.getBalance() - withdraw);
 									}
-								} else {
-									acc.setBalance(acc.getBalance() - withdraw);
 								}
 								// recording transaction:
 								// String date = new
@@ -1825,6 +1863,7 @@ public class Menu extends JFrame {
 							}
 
 						}
+
 					});
 
 					returnButton.addActionListener(new ActionListener() {
@@ -1836,6 +1875,18 @@ public class Menu extends JFrame {
 				}
 			});
 		}
+	}
+
+	private void customersInfo(JTextField firstNameTextField, JTextField surnameTextField, JTextField pPSTextField,
+			JTextField dOBTextField, JTextField customerIDTextField, JTextField passwordTextField, int pos) {
+
+		firstNameTextField.setText(customerList.get(position).getFirstName());
+		surnameTextField.setText(customerList.get(position).getSurname());
+		pPSTextField.setText(customerList.get(position).getPPS());
+		dOBTextField.setText(customerList.get(position).getDOB());
+		customerIDTextField.setText(customerList.get(position).getCustomerID());
+		passwordTextField.setText(customerList.get(position).getPassword());
+
 	}
 
 	public static boolean isNumeric(String str) // a method that tests if a string is numeric
