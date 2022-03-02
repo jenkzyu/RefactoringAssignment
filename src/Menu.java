@@ -4,6 +4,8 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.io.*;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -145,295 +147,30 @@ public class Menu extends JFrame {
 		content.setLayout(new GridLayout(2, 1));
 		content.add(userTypePanel);
 		content.add(continuePanel);
-		// HARD CODE TEST// to create instance without inputting new customer(s)
-//		ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
-//		ArrayList<AccountTransaction> trans = new ArrayList<AccountTransaction>();
-//		CustomerAccount depo = new CustomerDepositAccount(1.5, "ID123", 0.0, trans);
-//		accounts.add(depo);
-//		Customer cust = new Customer("123", "Yu", "Jenkin", "1234", "ID123", "passwor", accounts);
-//		customerList.add(cust);
-		/////////////////////
+
 		continueButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				String user = userType.getSelection().getActionCommand();
 				// if user selects NEW
 				// CUSTOMER--------------------------------------------------------------------------------------
 				if (user.equals("New Customer")) {
-					f.dispose();
-					f1 = new JFrame("Create New Customer");
-					f1.setSize(400, 300);
-					f1.setLocation(200, 200);
-					f1.addWindowListener(new WindowAdapter() {
-						public void windowClosing(WindowEvent we) {
-							System.exit(0);
-						}
-					});
-					Container content = f1.getContentPane();
-					content.setLayout(new BorderLayout());
 
-					firstNameLabel = new JLabel("First Name:", SwingConstants.RIGHT);
-					surnameLabel = new JLabel("Surname:", SwingConstants.RIGHT);
-					pPPSLabel = new JLabel("PPS Number:", SwingConstants.RIGHT);
-					dOBLabel = new JLabel("Date of birth", SwingConstants.RIGHT);
-					firstNameTextField = new JTextField(20);
-					surnameTextField = new JTextField(20);
-					pPSTextField = new JTextField(20);
-					dOBTextField = new JTextField(20);
-					JPanel panel = new JPanel(new GridLayout(6, 2));
-					panel.add(firstNameLabel);
-					panel.add(firstNameTextField);
-					panel.add(surnameLabel);
-					panel.add(surnameTextField);
-					panel.add(pPPSLabel);
-					panel.add(pPSTextField);
-					panel.add(dOBLabel);
-					panel.add(dOBTextField);
-
-					panel2 = new JPanel();
-					add = new JButton("Add");
-
-					add.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-
-							PPS = pPSTextField.getText();
-							firstName = firstNameTextField.getText();
-							surname = surnameTextField.getText();
-							DOB = dOBTextField.getText();
-							password = "";
-
-							CustomerID = "ID" + PPS;
-
-							ArrayList<String> custID = new ArrayList<String>();
-							// got rid of the add to avoid clicking twice
-//							add.addActionListener(new ActionListener() {
-//								public void actionPerformed(ActionEvent e) {
-
-//							boolean validateString = true;
-//							while (validateString) {
-//								// password = JOptionPane.showInputDialog(f, "Enter 7 character Password;");
-//
-//								if (firstNameTextField.getText().length() > 20)
-//								{
-//									//validateString = false;
-//									JOptionPane.showMessageDialog(null, null, "Firstname must not exceed 20 charatcers long",
-//											JOptionPane.OK_OPTION);
-//									menuStart();
-////									validateString = false;
-//								} else {
-//									 validateString = false;
-//									
-//								}
-//							}
-
-							f1.dispose();
-
-							boolean loop = true;
-							while (loop) {
-								password = JOptionPane.showInputDialog(f, "Enter 7 character Password;");
-
-								if (password.length() != 7)// Making sure password is 7 characters
-								{
-									JOptionPane.showMessageDialog(null, null, "Password must be 7 charatcers long",
-											JOptionPane.OK_OPTION);
-								} else {
-									loop = false;
-								}
-							}
-							// Read from file
-							try {
-								File readFile = new File("C:/refactoring/customerID.txt");
-								Scanner scan = new Scanner(readFile);
-								while (scan.hasNextLine()) {
-									String data = scan.nextLine();
-									custID.add(data);
-								}
-
-								scan.close();
-							} catch (FileNotFoundException fileNotFound) {
-								fileNotFound.printStackTrace();
-
-							}
-							// validation if user already exists.
-							if (!custID.contains(CustomerID)) {
-								ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
-								Customer customer = new Customer(PPS, surname, firstName, DOB, CustomerID, password,
-										accounts);
-								customerList.add(customer);
-								// write to file
-								try {
-									// add customerID to file
-									FileWriter myWriter = new FileWriter("C:/refactoring/customerID.txt", true);
-									myWriter.write(customer.getCustomerID() + "\n");
-									myWriter.close();
-									// write to customerInfo to store all info of customer
-									FileWriter details = new FileWriter("C:/refactoring/customerInfo.txt", true);
-									details.write(customer.toString());
-									details.close();
-									System.out.println("Successfully wrote to the file.");
-
-								} catch (IOException exception) {
-									System.out.println("An error occurred.");
-									exception.printStackTrace();
-								}
-
-								JOptionPane.showMessageDialog(f,
-										"CustomerID = " + CustomerID + "\n Password = " + password, "Customer created.",
-										JOptionPane.INFORMATION_MESSAGE);
-
-								menuStart();
-							} else {
-								JOptionPane.showMessageDialog(f, "Customer already exists.", "Error",
-										JOptionPane.INFORMATION_MESSAGE);
-
-								menuStart();
-
-							}
-							// f.dispose(); // got rid of this because it destroys the main frame will
-							// result on null instance.
-//								}
-//							});
-						}
-					});
-					JButton cancel = new JButton("Cancel");
-					cancel.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							f1.dispose();
-							menuStart();
-						}
-					});
-
-					panel2.add(add);
-					panel2.add(cancel);
-
-					content.add(panel, BorderLayout.CENTER);
-					content.add(panel2, BorderLayout.SOUTH);
-
-					f1.setVisible(true);
-
+					createCustomer();
 				}
 
-				// ------------------------------------------------------------------------------------------------------------------
-
-				// if user select
 				// ADMIN----------------------------------------------------------------------------------------------
 				if (user.equals("Administrator"))
 
 				{
-					boolean loop = true, loop2 = true;
-					boolean cont = false;
-					while (loop) {
-						Object adminUsername = JOptionPane.showInputDialog(f, "Enter Administrator Username:");
-
-						if (!adminUsername.equals("admin"))// search admin list for admin with matching admin username
-						{
-							int reply = JOptionPane.showConfirmDialog(null, null, "Incorrect Username. Try again?",
-									JOptionPane.YES_NO_OPTION);
-							if (reply == JOptionPane.YES_OPTION) {
-								loop = true;
-							} else if (reply == JOptionPane.NO_OPTION) {
-								f1.dispose();
-								loop = false;
-								loop2 = false;
-								menuStart();
-							}
-						} else {
-							loop = false;
-						}
-					}
-
-					while (loop2) {
-						Object adminPassword = JOptionPane.showInputDialog(f, "Enter Administrator Password;");
-
-						if (!adminPassword.equals("admin11"))// search admin list for admin with matching admin password
-						{
-							int reply = JOptionPane.showConfirmDialog(null, null, "Incorrect Password. Try again?",
-									JOptionPane.YES_NO_OPTION);
-							if (reply == JOptionPane.YES_OPTION) {
-
-							} else if (reply == JOptionPane.NO_OPTION) {
-								f1.dispose();
-								loop2 = false;
-								menuStart();
-							}
-						} else {
-							loop2 = false;
-							cont = true;
-						}
-					}
-
-					if (cont) {
-						f.dispose(); // fix
-						loop = false;
-						admin();
-					}
+					adminUser();
 				}
-				// ----------------------------------------------------------------------------------------------------------------
 
 				// if user selects CUSTOMER
 				// ----------------------------------------------------------------------------------------
 				if (user.equals("Customer")) {
-					boolean loop = true, loop2 = true;
-					boolean cont = false;
-					boolean found = false;
-					Customer customer = null;
-					while (loop) {
-						Object customerID = JOptionPane.showInputDialog(f, "Enter Customer ID:");
-
-						for (Customer aCustomer : customerList) {
-
-							if (aCustomer.getCustomerID().equals(customerID))// search customer list for matching
-																				// customer ID
-							{
-								found = true;
-								customer = aCustomer;
-							}
-						}
-
-						if (found == false) {
-							int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
-									JOptionPane.YES_NO_OPTION);
-							if (reply == JOptionPane.YES_OPTION) {
-								loop = true;
-							} else if (reply == JOptionPane.NO_OPTION) {
-								f.dispose();
-								loop = false;
-								loop2 = false;
-								menuStart();
-							}
-						} else {
-							loop = false;
-						}
-
-					}
-
-					while (loop2) {
-						Object customerPassword = JOptionPane.showInputDialog(f, "Enter Customer Password;");
-
-						if (!customer.getPassword().equals(customerPassword))// check if custoemr password is correct
-						{
-							int reply = JOptionPane.showConfirmDialog(null, null, "Incorrect password. Try again?",
-									JOptionPane.YES_NO_OPTION);
-							if (reply == JOptionPane.YES_OPTION) {
-
-							} else if (reply == JOptionPane.NO_OPTION) {
-								f.dispose();
-								loop2 = false;
-								menuStart();
-							}
-						} else {
-							loop2 = false;
-							cont = true;
-						}
-					}
-
-					if (cont) {
-						f.dispose();
-						loop = false;
-						customer(customer);
-					}
+					customerLogin();
 				}
 
-				// -----------------------------------------------------------------------------------------------------------------------
 			}
 
 		});
@@ -1229,12 +966,6 @@ public class Menu extends JFrame {
 							position = 0;
 							customersInfo(firstNameTextField, surnameTextField, pPSTextField, dOBTextField,
 									customerIDTextField, passwordTextField, position);
-//							firstNameTextField.setText(customerList.get(0).getFirstName());
-//							surnameTextField.setText(customerList.get(0).getSurname());
-//							pPSTextField.setText(customerList.get(0).getPPS());
-//							dOBTextField.setText(customerList.get(0).getDOB());
-//							customerIDTextField.setText(customerList.get(0).getCustomerID());
-//							passwordTextField.setText(customerList.get(0).getPassword());
 						}
 					});
 
@@ -1260,7 +991,7 @@ public class Menu extends JFrame {
 								// don't do anything
 							} else {
 								position = position + 1;
-								
+
 								customersInfo(firstNameTextField, surnameTextField, pPSTextField, dOBTextField,
 										customerIDTextField, passwordTextField, position);
 							}
@@ -1271,9 +1002,70 @@ public class Menu extends JFrame {
 					last.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
 							position = customerList.size() - 1;
-							
+
 							customersInfo(firstNameTextField, surnameTextField, pPSTextField, dOBTextField,
 									customerIDTextField, passwordTextField, position);
+						}
+					});
+
+					findAccNum.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent ae) {
+
+							String input = JOptionPane.showInputDialog(f, "Enter Account Number");
+							for (Customer ca : customerList) {
+								ArrayList<CustomerAccount> ac = ca.getAccounts();
+								for (int i = 0; i < ac.size(); i++) {
+									if (ac.get(i).getNumber().equalsIgnoreCase(input)) {
+										position = ac.size();
+										customersInfo(firstNameTextField, surnameTextField, pPSTextField, dOBTextField,
+												customerIDTextField, passwordTextField, position);
+									}
+								}
+							}
+						}
+					});
+
+					findBySurname.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent ae) {
+							String input = JOptionPane.showInputDialog(f, "Enter Surname");
+							for (int i = 0; i < customerList.size(); i++) {
+								if (customerList.get(i).getSurname().endsWith(input)) {
+									position = i;
+									customersInfo(firstNameTextField, surnameTextField, pPSTextField, dOBTextField,
+											customerIDTextField, passwordTextField, position);
+								}
+							}
+						}
+					});
+
+					listAll.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent ae) {
+							// f.dispose();
+							f = new JFrame("List of all Customers");
+							f.setSize(400, 300);
+							f.setLocation(200, 200);
+							f.addWindowListener(new WindowAdapter() {
+								public void windowClosing(WindowEvent we) {
+									System.exit(0);
+								}
+							});
+							f.setVisible(true);
+
+							String[] column = { "PPS", "Surname", "Firstname", "DOB", "Customer ID" };
+
+							ArrayList<Object[]> allCustomer = new ArrayList<Object[]>();
+							for (int i = 0; i < customerList.size(); i++) {
+								allCustomer.add(new Object[] { customerList.get(i).getPPS(),
+										customerList.get(i).getSurname(), customerList.get(i).getFirstName(),
+										customerList.get(i).getDOB(), customerList.get(i).getCustomerID(), });
+
+							}
+							JTable jt = new JTable();
+							jt.setModel(new DefaultTableModel(allCustomer.toArray(new Object[][] {}), column));
+							jt.setBounds(30, 40, 200, 300);
+							JScrollPane sp = new JScrollPane(jt);
+							f.add(sp);
+
 						}
 					});
 
@@ -1702,18 +1494,8 @@ public class Menu extends JFrame {
 
 							}
 							if (on == true) {
-								String balanceTest = JOptionPane.showInputDialog(f, "Enter amount you wish to lodge:");// the
-																														// isNumeric
-																														// method
-																														// tests
-																														// to
-																														// see
-																														// if
-																														// the
-																														// string
-																														// entered
-																														// was
-																														// numeric.
+								String balanceTest = JOptionPane.showInputDialog(f, "Enter amount you wish to lodge:");
+
 								if (isNumeric(balanceTest)) {
 
 									balance = Double.parseDouble(balanceTest);
@@ -1874,6 +1656,270 @@ public class Menu extends JFrame {
 					});
 				}
 			});
+		}
+	}
+
+	private void customerLogin() {
+		boolean loop = true, loop2 = true;
+		boolean cont = false;
+		boolean found = false;
+		Customer customer = null;
+		while (loop) {
+			Object customerID = JOptionPane.showInputDialog(f, "Enter Customer ID:");
+
+			for (Customer aCustomer : customerList) {
+
+				if (aCustomer.getCustomerID().equals(customerID))// search customer list for matching
+																	// customer ID
+				{
+					found = true;
+					customer = aCustomer;
+				}
+			}
+
+			if (found == false) {
+				int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
+						JOptionPane.YES_NO_OPTION);
+				if (reply == JOptionPane.YES_OPTION) {
+					loop = true;
+				} else if (reply == JOptionPane.NO_OPTION) {
+					f.dispose();
+					loop = false;
+					loop2 = false;
+					menuStart();
+				}
+			} else {
+				loop = false;
+			}
+
+		}
+
+		while (loop2) {
+			Object customerPassword = JOptionPane.showInputDialog(f, "Enter Customer Password;");
+
+			if (!customer.getPassword().equals(customerPassword))// check if custoemr password is correct
+			{
+				int reply = JOptionPane.showConfirmDialog(null, null, "Incorrect password. Try again?",
+						JOptionPane.YES_NO_OPTION);
+				if (reply == JOptionPane.YES_OPTION) {
+
+				} else if (reply == JOptionPane.NO_OPTION) {
+					f.dispose();
+					loop2 = false;
+					menuStart();
+				}
+			} else {
+				loop2 = false;
+				cont = true;
+			}
+		}
+
+		if (cont) {
+			f.dispose();
+			loop = false;
+			customer(customer);
+		}
+	}
+
+	private void createCustomer() {
+		f.dispose();
+		f1 = new JFrame("Create New Customer");
+		f1.setSize(400, 300);
+		f1.setLocation(200, 200);
+		f1.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent we) {
+				System.exit(0);
+			}
+		});
+		Container content = f1.getContentPane();
+		content.setLayout(new BorderLayout());
+
+		firstNameLabel = new JLabel("First Name:", SwingConstants.RIGHT);
+		surnameLabel = new JLabel("Surname:", SwingConstants.RIGHT);
+		pPPSLabel = new JLabel("PPS Number:", SwingConstants.RIGHT);
+		dOBLabel = new JLabel("Date of birth", SwingConstants.RIGHT);
+		firstNameTextField = new JTextField(20);
+		surnameTextField = new JTextField(20);
+		pPSTextField = new JTextField(20);
+		dOBTextField = new JTextField(20);
+		JPanel panel = new JPanel(new GridLayout(6, 2));
+		panel.add(firstNameLabel);
+		panel.add(firstNameTextField);
+		panel.add(surnameLabel);
+		panel.add(surnameTextField);
+		panel.add(pPPSLabel);
+		panel.add(pPSTextField);
+		panel.add(dOBLabel);
+		panel.add(dOBTextField);
+
+		panel2 = new JPanel();
+		add = new JButton("Add");
+
+		add.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				PPS = pPSTextField.getText();
+				firstName = firstNameTextField.getText();
+				surname = surnameTextField.getText();
+				DOB = dOBTextField.getText();
+				password = "";
+
+				CustomerID = "ID" + PPS;
+
+				ArrayList<String> custID = new ArrayList<String>();
+				// got rid of the add to avoid clicking twice
+//				add.addActionListener(new ActionListener() {
+//					public void actionPerformed(ActionEvent e) {
+
+//				boolean validateString = true;
+//				while (validateString) {
+//					// password = JOptionPane.showInputDialog(f, "Enter 7 character Password;");
+//
+//					if (firstNameTextField.getText().length() > 20)
+//					{
+//						//validateString = false;
+//						JOptionPane.showMessageDialog(null, null, "Firstname must not exceed 20 charatcers long",
+//								JOptionPane.OK_OPTION);
+//						menuStart();
+////						validateString = false;
+//					} else {
+//						 validateString = false;
+//						
+//					}
+//				}
+
+				f1.dispose();
+
+				boolean loop = true;
+				while (loop) {
+					password = JOptionPane.showInputDialog(f, "Enter 7 character Password;");
+
+					if (password.length() != 7)// Making sure password is 7 characters
+					{
+						JOptionPane.showMessageDialog(null, null, "Password must be 7 charatcers long",
+								JOptionPane.OK_OPTION);
+					} else {
+						loop = false;
+					}
+				}
+				// Read from file
+				try {
+					File readFile = new File("C:/refactoring/customerID.txt");
+					Scanner scan = new Scanner(readFile);
+					while (scan.hasNextLine()) {
+						String data = scan.nextLine();
+						custID.add(data);
+					}
+
+					scan.close();
+				} catch (FileNotFoundException fileNotFound) {
+					fileNotFound.printStackTrace();
+
+				}
+				// validation if user already exists.
+				if (!custID.contains(CustomerID)) {
+					ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
+					Customer customer = new Customer(PPS, surname, firstName, DOB, CustomerID, password, accounts);
+					customerList.add(customer);
+					// write to file
+					try {
+						// add customerID to file
+						FileWriter myWriter = new FileWriter("C:/refactoring/customerID.txt", true);
+						myWriter.write(customer.getCustomerID() + "\n");
+						myWriter.close();
+						// write to customerInfo to store all info of customer
+						FileWriter details = new FileWriter("C:/refactoring/customerInfo.txt", true);
+						details.write(customer.toString());
+						details.close();
+						System.out.println("Successfully wrote to the file.");
+
+					} catch (IOException exception) {
+						System.out.println("An error occurred.");
+						exception.printStackTrace();
+					}
+
+					JOptionPane.showMessageDialog(f, "CustomerID = " + CustomerID + "\n Password = " + password,
+							"Customer created.", JOptionPane.INFORMATION_MESSAGE);
+
+					menuStart();
+				} else {
+					JOptionPane.showMessageDialog(f, "Customer already exists.", "Error",
+							JOptionPane.INFORMATION_MESSAGE);
+
+					menuStart();
+
+				}
+				// f.dispose(); // got rid of this because it destroys the main frame will
+				// result on null instance.
+//					}
+//				});
+			}
+		});
+		JButton cancel = new JButton("Cancel");
+		cancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				f1.dispose();
+				menuStart();
+			}
+		});
+
+		panel2.add(add);
+		panel2.add(cancel);
+
+		content.add(panel, BorderLayout.CENTER);
+		content.add(panel2, BorderLayout.SOUTH);
+
+		f1.setVisible(true);
+
+	}
+
+	private void adminUser() {
+		boolean loop = true, loop2 = true;
+		boolean cont = false;
+		while (loop) {
+			Object adminUsername = JOptionPane.showInputDialog(f, "Enter Administrator Username:");
+
+			if (!adminUsername.equals("admin"))// search admin list for admin with matching admin username
+			{
+				int reply = JOptionPane.showConfirmDialog(null, null, "Incorrect Username. Try again?",
+						JOptionPane.YES_NO_OPTION);
+				if (reply == JOptionPane.YES_OPTION) {
+					loop = true;
+				} else if (reply == JOptionPane.NO_OPTION) {
+					f1.dispose();
+					loop = false;
+					loop2 = false;
+					menuStart();
+				}
+			} else {
+				loop = false;
+			}
+		}
+
+		while (loop2) {
+			Object adminPassword = JOptionPane.showInputDialog(f, "Enter Administrator Password;");
+
+			if (!adminPassword.equals("admin11"))// search admin list for admin with matching admin password
+			{
+				int reply = JOptionPane.showConfirmDialog(null, null, "Incorrect Password. Try again?",
+						JOptionPane.YES_NO_OPTION);
+				if (reply == JOptionPane.YES_OPTION) {
+
+				} else if (reply == JOptionPane.NO_OPTION) {
+					f1.dispose();
+					loop2 = false;
+					menuStart();
+				}
+			} else {
+				loop2 = false;
+				cont = true;
+			}
+		}
+
+		if (cont) {
+			f.dispose(); // fix
+			loop = false;
+			admin();
 		}
 	}
 
