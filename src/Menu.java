@@ -26,9 +26,8 @@ public class Menu extends JFrame implements IResponses {
 	private CustomerAccount acc = new CustomerAccount();
 	JFrame f, f1;
 	JLabel firstNameLabel, surnameLabel, ppsLabel, dobLabel, customerIDLabel, passwordLabel;
-	JTextField firstNameTextField, surnameTextField, ppsTextField, dobTextField, 
-	customerIDTextField, passwordTextField;
-	
+	JTextField firstNameTextField, surnameTextField, ppsTextField, dobTextField, customerIDTextField, passwordTextField;
+
 	Container content;
 
 	JPanel panel2;
@@ -57,8 +56,7 @@ public class Menu extends JFrame implements IResponses {
 		 * customer or admin.
 		 */
 		f = frame("User Type");
-		
-		
+
 		JPanel userTypePanel = new JPanel();
 		final ButtonGroup userType = new ButtonGroup();
 		JRadioButton radioButton;
@@ -82,20 +80,18 @@ public class Menu extends JFrame implements IResponses {
 		content.setLayout(new GridLayout(2, 1));
 		content.add(userTypePanel);
 		content.add(continuePanel);
-		
-		
 
 		continueButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				String user = userType.getSelection().getActionCommand();
 				// if user selects NEW
-				// CUSTOMER--------------------------------------------------------------------------------------
+				// CUSTOMER
 				if (user.equals("New Customer")) {
 
 					createCustomer();
 				}
 
-				// ADMIN----------------------------------------------------------------------------------------------
+				// ADMIN
 				if (user.equals("Administrator"))
 
 				{
@@ -103,7 +99,6 @@ public class Menu extends JFrame implements IResponses {
 				}
 
 				// if user selects CUSTOMER
-				// ----------------------------------------------------------------------------------------
 				if (user.equals("Customer")) {
 					customerLogin();
 				}
@@ -211,8 +206,7 @@ public class Menu extends JFrame implements IResponses {
 						}
 
 						if (found == false) {
-							int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
-									JOptionPane.YES_NO_OPTION);
+							int reply = onFailure( "Try Again?", "User not found");
 							if (reply == JOptionPane.YES_OPTION) {
 								loop = true;
 							} else if (reply == JOptionPane.NO_OPTION) {
@@ -223,7 +217,7 @@ public class Menu extends JFrame implements IResponses {
 							}
 						} else {
 							f.dispose();
-							f =frame("Administrator Menu");
+							f = frame("Administrator Menu");
 
 							f.setVisible(true);
 
@@ -251,7 +245,7 @@ public class Menu extends JFrame implements IResponses {
 
 							if (customer.getAccounts().isEmpty()) {
 								noAccounts(f);
-							
+
 							} else {
 
 								for (int i = 0; i < customer.getAccounts().size(); i++) {
@@ -321,7 +315,6 @@ public class Menu extends JFrame implements IResponses {
 								"Customer ID of Customer You Wish to Apply Overdraft to:");
 
 						for (Customer aCustomer : customerList) {
-
 							if (aCustomer.getCustomerID().equals(customerID)) {
 								found = true;
 								customer = aCustomer;
@@ -330,8 +323,7 @@ public class Menu extends JFrame implements IResponses {
 						}
 
 						if (found == false) {
-							int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
-									JOptionPane.YES_NO_OPTION);
+							int reply = onFailure( "Try Again?", "User not found");
 							if (reply == JOptionPane.YES_OPTION) {
 								loop = true;
 							} else if (reply == JOptionPane.NO_OPTION) {
@@ -393,8 +385,7 @@ public class Menu extends JFrame implements IResponses {
 												// [StackOverflow] any
 												// number + an optional decimal number
 												// but can still take any number
-												if (!inputOverdraft.matches("[0-9]*\\.?[0-9]*$"))
-												{
+												if (!inputOverdraft.matches("[0-9]*\\.?[0-9]*$")) {
 													JOptionPane.showMessageDialog(null, "Please input overdraft",
 															"Error", JOptionPane.OK_OPTION);
 												} else {
@@ -454,8 +445,7 @@ public class Menu extends JFrame implements IResponses {
 						}
 
 						if (found == false) {
-							int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
-									JOptionPane.YES_NO_OPTION);
+							int reply = onFailure( "Try Again?", "User not found");
 							if (reply == JOptionPane.YES_OPTION) {
 								loop = true;
 							} else if (reply == JOptionPane.NO_OPTION) {
@@ -466,7 +456,7 @@ public class Menu extends JFrame implements IResponses {
 							}
 						} else {
 							f.dispose();
-							f=frame("Administrator Menu");
+							f = frame("Administrator Menu");
 							f.setVisible(true);
 
 							JComboBox<String> box = new JComboBox<String>();
@@ -510,10 +500,10 @@ public class Menu extends JFrame implements IResponses {
 										boolean loop = true;
 
 										while (loop) {
-											//the isNumeric method tests to see if the string entered is numeric.
+											// the isNumeric method tests to see if the string entered is numeric.
 											String interestString = JOptionPane.showInputDialog(f,
 													"Enter interest percentage you wish to apply: \n NOTE: Please enter a numerical value. (with no percentage sign) \n E.g: If you wish to apply 8% interest, enter '8'");
-											
+
 											if (isNumeric(interestString)) {
 
 												interest = Double.parseDouble(interestString);
@@ -579,8 +569,7 @@ public class Menu extends JFrame implements IResponses {
 						}
 
 						if (found == false) {
-							int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
-									JOptionPane.YES_NO_OPTION);
+							int reply = onFailure( "Try Again?", "User not found");
 							if (reply == JOptionPane.YES_OPTION) {
 								loop = true;
 							} else if (reply == JOptionPane.NO_OPTION) {
@@ -671,7 +660,6 @@ public class Menu extends JFrame implements IResponses {
 					cancelButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
 							f.dispose();
-
 							admin();
 						}
 					});
@@ -714,7 +702,6 @@ public class Menu extends JFrame implements IResponses {
 							textArea.append(acc.getTransactionList().get(c).toString());
 							// Int total = acc.getTransactionList().get(c).getAmount(); //I was going to use
 							// this to keep a running total but I couldnt get it working.
-
 						}
 					}
 				}
@@ -778,16 +765,10 @@ public class Menu extends JFrame implements IResponses {
 					listAll = new JButton("List all Customer");
 					findAccNum = new JButton("Find By Account Number");
 					findBySurname = new JButton("Find By Surname");
-					
-				    customersInfo(firstNameTextField, surnameTextField, ppsTextField,
-				    		dobTextField, customerIDTextField, passwordTextField, position);
 
-//					firstNameTextField.setText(customerList.get(0).getFirstName());
-//					surnameTextField.setText(customerList.get(0).getSurname());
-//					ppsTextField.setText(customerList.get(0).getPPS());
-//					dobTextField.setText(customerList.get(0).getDOB());
-//					customerIDTextField.setText(customerList.get(0).getCustomerID());
-//					passwordTextField.setText(customerList.get(0).getPassword());
+					// Set customer info
+					customersInfo(firstNameTextField, surnameTextField, ppsTextField, dobTextField, customerIDTextField,
+							passwordTextField, position);
 
 					firstNameTextField.setEditable(false);
 					surnameTextField.setEditable(false);
@@ -960,8 +941,7 @@ public class Menu extends JFrame implements IResponses {
 						}
 
 						if (found == false) {
-							int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
-									JOptionPane.YES_NO_OPTION);
+							int reply = onFailure( "Try Again?", "User not found");
 							if (reply == JOptionPane.YES_OPTION) {
 								loop = true;
 							} else if (reply == JOptionPane.NO_OPTION) {
@@ -991,8 +971,7 @@ public class Menu extends JFrame implements IResponses {
 									// Making sure that user only inputs and takes number. Regex [StackOverflow] any
 									// number + an optional decimal number
 									// but can still take any number
-									if (!inputOverdraft.matches("[0-9]*\\.?[0-9]*$"))
-									{
+									if (!inputOverdraft.matches("[0-9]*\\.?[0-9]*$")) {
 										JOptionPane.showMessageDialog(null, "Please input overdraft", "Error",
 												JOptionPane.OK_OPTION);
 									} else {
@@ -1073,8 +1052,7 @@ public class Menu extends JFrame implements IResponses {
 						}
 
 						if (found == false) {
-							int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
-									JOptionPane.YES_NO_OPTION);
+							int reply = onFailure( "Try Again?", "User not found");
 							if (reply == JOptionPane.YES_OPTION) {
 								loop = true;
 							} else if (reply == JOptionPane.NO_OPTION) {
@@ -1118,8 +1096,7 @@ public class Menu extends JFrame implements IResponses {
 					}
 
 					if (found == false) {
-						int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
-								JOptionPane.YES_NO_OPTION);
+						int reply = onFailure( "Try Again?", "User not found");
 						if (reply == JOptionPane.YES_OPTION) {
 							loop = true;
 						} else if (reply == JOptionPane.NO_OPTION) {
@@ -1232,7 +1209,7 @@ public class Menu extends JFrame implements IResponses {
 						public void actionPerformed(ActionEvent ae) {
 							f.dispose();
 							f = frame("Customer Menu");
-							
+
 							f.setVisible(true);
 
 							JLabel label1 = new JLabel("Summary of account transactions: ");
@@ -1333,8 +1310,7 @@ public class Menu extends JFrame implements IResponses {
 
 								String euro = "\u20ac";
 								acc.setBalance(acc.getBalance() + balance);
-								// String date = new
-								// SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+
 								Date date = new Date();
 								String date2 = date.toString();
 								String type = "Lodgement";
@@ -1448,9 +1424,7 @@ public class Menu extends JFrame implements IResponses {
 										acc.setBalance(acc.getBalance() - withdraw);
 									}
 								}
-								// recording transaction:
-								// String date = new
-								// SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+
 								Date date = new Date();
 								String date2 = date.toString();
 
@@ -1492,17 +1466,15 @@ public class Menu extends JFrame implements IResponses {
 			Object customerID = JOptionPane.showInputDialog(f, "Enter Customer ID:");
 
 			for (Customer aCustomer : customerList) {
-				//search customer list for matching customer ID
-				if (aCustomer.getCustomerID().equals(customerID))
-				{
+				// search customer list for matching customer ID
+				if (aCustomer.getCustomerID().equals(customerID)) {
 					found = true;
 					customer = aCustomer;
 				}
 			}
 
 			if (found == false) {
-				int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
-						JOptionPane.YES_NO_OPTION);
+				int reply = onFailure( "Try Again?", "User not found");
 				if (reply == JOptionPane.YES_OPTION) {
 					loop = true;
 				} else if (reply == JOptionPane.NO_OPTION) {
@@ -1522,8 +1494,7 @@ public class Menu extends JFrame implements IResponses {
 
 			if (!customer.getPassword().equals(customerPassword))// check if custoemr password is correct
 			{
-				int reply = JOptionPane.showConfirmDialog(null, null, "Incorrect password. Try again?",
-						JOptionPane.YES_NO_OPTION);
+				int reply = onFailure("Try Again?", "Incorrect Password");
 				if (reply == JOptionPane.YES_OPTION) {
 
 				} else if (reply == JOptionPane.NO_OPTION) {
@@ -1547,7 +1518,7 @@ public class Menu extends JFrame implements IResponses {
 	private void createCustomer() {
 		f.dispose();
 		f1 = frame("Create New Customer");
-		
+
 		Container content = f1.getContentPane();
 		content.setLayout(new BorderLayout());
 
@@ -1675,8 +1646,7 @@ public class Menu extends JFrame implements IResponses {
 
 			if (!adminUsername.equals("admin"))// search admin list for admin with matching admin username
 			{
-				int reply = JOptionPane.showConfirmDialog(null, null, "Incorrect Username. Try again?",
-						JOptionPane.YES_NO_OPTION);
+				int reply = onFailure("Try Again?", "Incorrect Username");
 				if (reply == JOptionPane.YES_OPTION) {
 					loop = true;
 				} else if (reply == JOptionPane.NO_OPTION) {
@@ -1695,8 +1665,7 @@ public class Menu extends JFrame implements IResponses {
 
 			if (!adminPassword.equals("admin11"))// search admin list for admin with matching admin password
 			{
-				int reply = JOptionPane.showConfirmDialog(null, null, "Incorrect Password. Try again?",
-						JOptionPane.YES_NO_OPTION);
+				int reply = onFailure("Try Again?", "Incorrect Password");
 				if (reply == JOptionPane.YES_OPTION) {
 
 				} else if (reply == JOptionPane.NO_OPTION) {
@@ -1728,7 +1697,6 @@ public class Menu extends JFrame implements IResponses {
 		passwordTextField.setText(customerList.get(position).getPassword());
 
 	}
-	
 
 	public static boolean isNumeric(String str) // a method that tests if a string is numeric
 	{
@@ -1739,7 +1707,7 @@ public class Menu extends JFrame implements IResponses {
 		}
 		return true;
 	}
-	
+
 	private static void readFromFile() {
 		ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
 
@@ -1791,7 +1759,6 @@ public class Menu extends JFrame implements IResponses {
 
 	}
 
-	
 	@Override
 	public JFrame frame(String frame) {
 		JFrame f = new JFrame(frame);
@@ -1803,25 +1770,31 @@ public class Menu extends JFrame implements IResponses {
 			}
 		});
 		return f;
-		
+
 	}
 
 	@Override
 	public void noCustomersFound(JFrame notFound) {
-		JOptionPane.showMessageDialog(f, "There are no customers yet!", "Oops!",
-				JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(f, "There are no customers yet!", "Oops!", JOptionPane.INFORMATION_MESSAGE);
 		f.dispose();
 		admin();
-		
+
 	}
-	
+
 	@Override
 	public void noAccounts(JFrame noAccounts) {
 		JOptionPane.showMessageDialog(f,
-				"This customer has no accounts! \n The admin must add accFJounts to this customer.",
-				"Oops!", JOptionPane.INFORMATION_MESSAGE);
+				"This customer has no accounts! \n The admin must add accFJounts to this customer.", "Oops!",
+				JOptionPane.INFORMATION_MESSAGE);
 		f.dispose();
 		admin();
+	}
+
+	@Override
+	public int onFailure(String message, String error) {
+		int reply = JOptionPane.showConfirmDialog(null, message, error,
+				JOptionPane.YES_NO_OPTION);
+		return reply;
 	}
 
 }
