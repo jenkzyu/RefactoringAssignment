@@ -547,9 +547,7 @@ public class Menu extends JFrame implements IResponses {
 
 		editCustomerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-
 				boolean loop = true;
-
 				boolean found = false;
 
 				if (customerList.isEmpty()) {
@@ -624,14 +622,12 @@ public class Menu extends JFrame implements IResponses {
 					customerIDTextField.setText(customer.getCustomerID());
 					passwordTextField.setText(customer.getPassword());
 
-					// JLabel label1 = new JLabel("Edit customer details below. The save");
-
 					JButton saveButton = new JButton("Save");
 					JButton cancelButton = new JButton("Exit");
 
 					cancelPanel.add(cancelButton, BorderLayout.SOUTH);
 					cancelPanel.add(saveButton, BorderLayout.SOUTH);
-					// content.removeAll();
+
 					Container content = f.getContentPane();
 					content.setLayout(new GridLayout(2, 1));
 					content.add(textPanel, BorderLayout.NORTH);
@@ -691,9 +687,8 @@ public class Menu extends JFrame implements IResponses {
 
 				JScrollPane scrollPane = new JScrollPane(textArea);
 				textPanel.add(scrollPane);
-
-				for (int a = 0; a < customerList.size(); a++)// For each customer, for each account, it displays each
-																// transaction.
+				// For each customer, for each account, it displays each transaction.
+				for (int a = 0; a < customerList.size(); a++)
 				{
 					for (int b = 0; b < customerList.get(a).getAccounts().size(); b++) {
 						acc = customerList.get(a).getAccounts().get(b);
@@ -711,9 +706,7 @@ public class Menu extends JFrame implements IResponses {
 
 				Container content = f.getContentPane();
 				content.setLayout(new GridLayout(1, 1));
-				// content.add(label1);
 				content.add(textPanel);
-				// content.add(returnPanel);
 
 				returnButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent ae) {
@@ -882,7 +875,6 @@ public class Menu extends JFrame implements IResponses {
 
 					listAll.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
-							// f.dispose();
 							f = frame("List of all Customers");
 							f.setVisible(true);
 
@@ -925,7 +917,6 @@ public class Menu extends JFrame implements IResponses {
 					noCustomersFound(f);
 				} else {
 					boolean loop = true;
-
 					boolean found = false;
 
 					while (loop) {
@@ -933,7 +924,6 @@ public class Menu extends JFrame implements IResponses {
 								"Customer ID of Customer You Wish to Add an Account to:");
 
 						for (Customer aCustomer : customerList) {
-
 							if (aCustomer.getCustomerID().equals(customerID)) {
 								found = true;
 								customer = aCustomer;
@@ -947,7 +937,6 @@ public class Menu extends JFrame implements IResponses {
 							} else if (reply == JOptionPane.NO_OPTION) {
 								f.dispose();
 								loop = false;
-
 								admin();
 							}
 						} else {
@@ -979,10 +968,10 @@ public class Menu extends JFrame implements IResponses {
 										overdraft = Double.parseDouble(inputOverdraft);
 									}
 								}
-
+								// this simple algorithm generates the account number
 								String number = String.valueOf("C" + (customerList.indexOf(customer) + 1) * 10
-										+ (customer.getAccounts().size() + 1));// this simple algorithm generates the
-																				// account number
+										+ (customer.getAccounts().size() + 1));
+																		
 								ArrayList<AccountTransaction> transactionList = new ArrayList<AccountTransaction>();
 								int randomPIN = (int) (Math.random() * 9000) + 1000;
 								String pin = String.valueOf(randomPIN);
@@ -1005,11 +994,11 @@ public class Menu extends JFrame implements IResponses {
 
 							if (account.equals("Deposit Account")) {
 								// create deposit account
-
 								double balance = 0, interest = 0;
+								// this simple algorithm generates the account number
 								String number = String.valueOf("D" + (customerList.indexOf(customer) + 1) * 10
-										+ (customer.getAccounts().size() + 1));// this simple algorithm generates the
-																				// account number
+										+ (customer.getAccounts().size() + 1));
+																				
 								ArrayList<AccountTransaction> transactionList = new ArrayList<AccountTransaction>();
 
 								CustomerDepositAccount deposit = new CustomerDepositAccount(interest, number, balance,
@@ -1031,7 +1020,8 @@ public class Menu extends JFrame implements IResponses {
 
 		deleteCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				boolean found = true, loop = true;
+				boolean found = true;
+				boolean	loop = true;
 
 				if (customerList.isEmpty()) {
 					JOptionPane.showMessageDialog(null, "There are currently no customers to display. ");
@@ -1087,7 +1077,6 @@ public class Menu extends JFrame implements IResponses {
 							"Customer ID of Customer from which you wish to delete an account");
 
 					for (Customer aCustomer : customerList) {
-
 						if (aCustomer.getCustomerID().equals(customerID)) {
 							found = true;
 							customer = aCustomer;
@@ -1102,7 +1091,6 @@ public class Menu extends JFrame implements IResponses {
 						} else if (reply == JOptionPane.NO_OPTION) {
 							f.dispose();
 							loop = false;
-
 							admin();
 						}
 					} else {
@@ -1275,8 +1263,8 @@ public class Menu extends JFrame implements IResponses {
 										on = false;
 									}
 
-									String Pin = JOptionPane.showInputDialog(f, "Enter 4 digit PIN;");
-									int i = Integer.parseInt(Pin);
+									String pin = JOptionPane.showInputDialog(f, "Enter 4 digit PIN;");
+									int i = Integer.parseInt(pin);
 
 									if (on) {
 										if (checkPin == i) {
@@ -1350,8 +1338,8 @@ public class Menu extends JFrame implements IResponses {
 										on = false;
 									}
 
-									String Pin = JOptionPane.showInputDialog(f, "Enter 4 digit PIN;");
-									int i = Integer.parseInt(Pin);
+									String pin = JOptionPane.showInputDialog(f, "Enter 4 digit PIN;");
+									int i = Integer.parseInt(pin);
 
 									if (on) {
 										if (checkPin == i) {
@@ -1643,8 +1631,8 @@ public class Menu extends JFrame implements IResponses {
 		boolean cont = false;
 		while (loop) {
 			Object adminUsername = JOptionPane.showInputDialog(f, "Enter Administrator Username:");
-
-			if (!adminUsername.equals("admin"))// search admin list for admin with matching admin username
+			// search admin list for admin with matching admin username
+			if (!adminUsername.equals("admin"))
 			{
 				int reply = onFailure("Try Again?", "Incorrect Username");
 				if (reply == JOptionPane.YES_OPTION) {
@@ -1652,7 +1640,6 @@ public class Menu extends JFrame implements IResponses {
 				} else if (reply == JOptionPane.NO_OPTION) {
 					f1.dispose();
 					loop = false;
-					loop2 = false;
 					menuStart();
 				}
 			} else {
@@ -1662,8 +1649,8 @@ public class Menu extends JFrame implements IResponses {
 
 		while (loop2) {
 			Object adminPassword = JOptionPane.showInputDialog(f, "Enter Administrator Password;");
-
-			if (!adminPassword.equals("admin11"))// search admin list for admin with matching admin password
+			// search admin list for admin with matching admin password
+			if (!adminPassword.equals("admin11"))
 			{
 				int reply = onFailure("Try Again?", "Incorrect Password");
 				if (reply == JOptionPane.YES_OPTION) {
@@ -1695,9 +1682,9 @@ public class Menu extends JFrame implements IResponses {
 		dOBTextField.setText(customerList.get(position).getDOB());
 		customerIDTextField.setText(customerList.get(position).getCustomerID());
 		passwordTextField.setText(customerList.get(position).getPassword());
-
+    
 	}
-
+    
 	public static boolean isNumeric(String str) // a method that tests if a string is numeric
 	{
 		try {

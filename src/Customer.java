@@ -92,9 +92,6 @@ public class Customer {
 		this.DOB = DOB;
 	}
 	
-
-
-	
 	public void setCustomerID(String customerID)
 	{
 		this.customerID = customerID;

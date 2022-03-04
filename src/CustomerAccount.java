@@ -24,14 +24,10 @@ public class CustomerAccount  {
 	}
 	
 	//Accessor methods
-	
 	public String getNumber()
 	{
 		return this.number;
 	}
-	
-	
-
 	
 	public double getBalance()
 	{

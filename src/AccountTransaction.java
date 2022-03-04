@@ -18,8 +18,6 @@ public class AccountTransaction {
 	{
 		this.date = date;
 		this.type = type;
-		
-		
 		this.amount = amount;
 		
 	}
