@@ -26,10 +26,10 @@ public class Menu extends JFrame {
 	private CustomerAccount acc = new CustomerAccount();
 	JFrame f, f1;
 	JLabel firstNameLabel, surnameLabel, ppsLabel, dobLabel, customerIDLabel, passwordLabel;
-	JTextField firstNameTextField, surnameTextField, pPSTextField, dOBTextField;
-	JTextField customerIDTextField, passwordTextField;
+	JTextField firstNameTextField, surnameTextField, ppsTextField, dobTextField, 
+	customerIDTextField, passwordTextField;
+	
 	Container content;
-	//Customer e1;
 
 	JPanel panel2;
 	JButton add;
@@ -47,63 +47,6 @@ public class Menu extends JFrame {
 		readFromFile();
 
 		driver.menuStart();
-	}
-
-	private static void readFromFile() {
-		ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
-
-		// Read from file
-		try {
-			Scanner file = new Scanner(new File("C:/refactoring/customerInfo.txt"));
-			while (file.hasNextLine()) {
-				String data = file.nextLine();
-				if (data.contains("PPS number")) {
-					String[] split = data.split("= ");
-					pps = split[1];
-					// System.out.println(pps);
-				} else if (data.contains("Surname")) {
-					String[] split1 = data.split("= ");
-					surName = split1[1];
-					// System.out.println(surName);
-				} else if (data.contains("First Name")) {
-					String[] split2 = data.split("= ");
-					firstname = split2[1];
-					// System.out.println(firstname);
-				} else if (data.contains("Date of Birth")) {
-					String[] split3 = data.split("= ");
-					dob = split3[1];
-					// System.out.println(dob);
-				} else if (data.contains("Customer ID")) {
-					String[] split4 = data.split("= ");
-					customerID = split4[1];
-					// System.out.println(customerID);
-				} else if (data.contains("Password")) {
-					String[] split5 = data.split("= ");
-					passWord = split5[1];
-					// System.out.println(passWord);
-				}
-
-				if (!pps.isEmpty() && !surName.isEmpty() && !firstname.isEmpty() && !dob.isEmpty()
-						&& !customerID.isEmpty() && !passWord.isEmpty()) {
-					customerList.add(new Customer(pps, surName, firstname, dob, customerID, passWord, accounts));
-
-					pps = "";
-					surName = "";
-					firstname = "";
-					dob = "";
-					customerID = "";
-					passWord = "";
-
-				} else {
-					// do nothing
-				}
-
-			}
-			file.close();
-		} catch (FileNotFoundException fileNotFound) {
-			fileNotFound.printStackTrace();
-		}
-
 	}
 
 	public void menuStart() {
@@ -687,8 +630,8 @@ public class Menu extends JFrame {
 					passwordLabel = new JLabel("Password:", SwingConstants.LEFT);
 					firstNameTextField = new JTextField(20);
 					surnameTextField = new JTextField(20);
-					pPSTextField = new JTextField(20);
-					dOBTextField = new JTextField(20);
+					ppsTextField = new JTextField(20);
+					dobTextField = new JTextField(20);
 					customerIDTextField = new JTextField(20);
 					passwordTextField = new JTextField(20);
 
@@ -701,9 +644,9 @@ public class Menu extends JFrame {
 					textPanel.add(surnameLabel);
 					textPanel.add(surnameTextField);
 					textPanel.add(ppsLabel);
-					textPanel.add(pPSTextField);
+					textPanel.add(ppsTextField);
 					textPanel.add(dobLabel);
-					textPanel.add(dOBTextField);
+					textPanel.add(dobTextField);
 					textPanel.add(customerIDLabel);
 					textPanel.add(customerIDTextField);
 					textPanel.add(passwordLabel);
@@ -711,8 +654,8 @@ public class Menu extends JFrame {
 
 					firstNameTextField.setText(customer.getFirstName());
 					surnameTextField.setText(customer.getSurname());
-					pPSTextField.setText(customer.getPPS());
-					dOBTextField.setText(customer.getDOB());
+					ppsTextField.setText(customer.getPPS());
+					dobTextField.setText(customer.getDOB());
 					customerIDTextField.setText(customer.getCustomerID());
 					passwordTextField.setText(customer.getPassword());
 
@@ -740,8 +683,8 @@ public class Menu extends JFrame {
 
 							customer.setFirstName(firstNameTextField.getText());
 							customer.setSurname(surnameTextField.getText());
-							customer.setPPS(pPSTextField.getText());
-							customer.setDOB(dOBTextField.getText());
+							customer.setPPS(ppsTextField.getText());
+							customer.setDOB(dobTextField.getText());
 							customer.setCustomerID(customerIDTextField.getText());
 							customer.setPassword(passwordTextField.getText());
 
@@ -846,8 +789,8 @@ public class Menu extends JFrame {
 					passwordLabel = new JLabel("Password:", SwingConstants.LEFT);
 					firstNameTextField = new JTextField(20);
 					surnameTextField = new JTextField(20);
-					pPSTextField = new JTextField(20);
-					dOBTextField = new JTextField(20);
+					ppsTextField = new JTextField(20);
+					dobTextField = new JTextField(20);
 					customerIDTextField = new JTextField(20);
 					passwordTextField = new JTextField(20);
 
@@ -862,15 +805,15 @@ public class Menu extends JFrame {
 
 					firstNameTextField.setText(customerList.get(0).getFirstName());
 					surnameTextField.setText(customerList.get(0).getSurname());
-					pPSTextField.setText(customerList.get(0).getPPS());
-					dOBTextField.setText(customerList.get(0).getDOB());
+					ppsTextField.setText(customerList.get(0).getPPS());
+					dobTextField.setText(customerList.get(0).getDOB());
 					customerIDTextField.setText(customerList.get(0).getCustomerID());
 					passwordTextField.setText(customerList.get(0).getPassword());
 
 					firstNameTextField.setEditable(false);
 					surnameTextField.setEditable(false);
-					pPSTextField.setEditable(false);
-					dOBTextField.setEditable(false);
+					ppsTextField.setEditable(false);
+					dobTextField.setEditable(false);
 					customerIDTextField.setEditable(false);
 					passwordTextField.setEditable(false);
 
@@ -879,9 +822,9 @@ public class Menu extends JFrame {
 					gridPanel.add(surnameLabel);
 					gridPanel.add(surnameTextField);
 					gridPanel.add(ppsLabel);
-					gridPanel.add(pPSTextField);
+					gridPanel.add(ppsTextField);
 					gridPanel.add(dobLabel);
-					gridPanel.add(dOBTextField);
+					gridPanel.add(dobTextField);
 					gridPanel.add(customerIDLabel);
 					gridPanel.add(customerIDTextField);
 					gridPanel.add(passwordLabel);
@@ -903,7 +846,7 @@ public class Menu extends JFrame {
 					first.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
 							position = 0;
-							customersInfo(firstNameTextField, surnameTextField, pPSTextField, dOBTextField,
+							customersInfo(firstNameTextField, surnameTextField, ppsTextField, dobTextField,
 									customerIDTextField, passwordTextField, position);
 						}
 					});
@@ -915,7 +858,7 @@ public class Menu extends JFrame {
 								// don't do anything
 							} else {
 								position = position - 1;
-								customersInfo(firstNameTextField, surnameTextField, pPSTextField, dOBTextField,
+								customersInfo(firstNameTextField, surnameTextField, ppsTextField, dobTextField,
 										customerIDTextField, passwordTextField, position);
 
 							}
@@ -931,7 +874,7 @@ public class Menu extends JFrame {
 							} else {
 								position = position + 1;
 
-								customersInfo(firstNameTextField, surnameTextField, pPSTextField, dOBTextField,
+								customersInfo(firstNameTextField, surnameTextField, ppsTextField, dobTextField,
 										customerIDTextField, passwordTextField, position);
 							}
 
@@ -942,7 +885,7 @@ public class Menu extends JFrame {
 						public void actionPerformed(ActionEvent ae) {
 							position = customerList.size() - 1;
 
-							customersInfo(firstNameTextField, surnameTextField, pPSTextField, dOBTextField,
+							customersInfo(firstNameTextField, surnameTextField, ppsTextField, dobTextField,
 									customerIDTextField, passwordTextField, position);
 						}
 					});
@@ -956,7 +899,7 @@ public class Menu extends JFrame {
 								for (int i = 0; i < ac.size(); i++) {
 									if (ac.get(i).getNumber().equalsIgnoreCase(input)) {
 										position = ac.size();
-										customersInfo(firstNameTextField, surnameTextField, pPSTextField, dOBTextField,
+										customersInfo(firstNameTextField, surnameTextField, ppsTextField, dobTextField,
 												customerIDTextField, passwordTextField, position);
 									}
 								}
@@ -970,7 +913,7 @@ public class Menu extends JFrame {
 							for (int i = 0; i < customerList.size(); i++) {
 								if (customerList.get(i).getSurname().endsWith(input)) {
 									position = i;
-									customersInfo(firstNameTextField, surnameTextField, pPSTextField, dOBTextField,
+									customersInfo(firstNameTextField, surnameTextField, ppsTextField, dobTextField,
 											customerIDTextField, passwordTextField, position);
 								}
 							}
@@ -1228,7 +1171,6 @@ public class Menu extends JFrame {
 
 	public void customer(Customer customer) {
 		f = frame("Customer Menu");
-		//e = e1;
 		f.setVisible(true);
 
 		if (customer.getAccounts().size() == 0) {
@@ -1643,17 +1585,17 @@ public class Menu extends JFrame {
 		dobLabel = new JLabel("Date of birth", SwingConstants.RIGHT);
 		firstNameTextField = new JTextField(20);
 		surnameTextField = new JTextField(20);
-		pPSTextField = new JTextField(20);
-		dOBTextField = new JTextField(20);
+		ppsTextField = new JTextField(20);
+		dobTextField = new JTextField(20);
 		JPanel panel = new JPanel(new GridLayout(6, 2));
 		panel.add(firstNameLabel);
 		panel.add(firstNameTextField);
 		panel.add(surnameLabel);
 		panel.add(surnameTextField);
 		panel.add(ppsLabel);
-		panel.add(pPSTextField);
+		panel.add(ppsTextField);
 		panel.add(dobLabel);
-		panel.add(dOBTextField);
+		panel.add(dobTextField);
 
 		panel2 = new JPanel();
 		add = new JButton("Add");
@@ -1661,10 +1603,10 @@ public class Menu extends JFrame {
 		add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				PPS = pPSTextField.getText();
+				PPS = ppsTextField.getText();
 				firstName = firstNameTextField.getText();
 				surname = surnameTextField.getText();
-				DOB = dOBTextField.getText();
+				DOB = dobTextField.getText();
 				password = "";
 
 				CustomerID = "ID" + PPS;
@@ -1836,4 +1778,56 @@ public class Menu extends JFrame {
 		}
 		return true;
 	}
+	
+	private static void readFromFile() {
+		ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
+
+		// Read from file
+		try {
+			Scanner file = new Scanner(new File("C:/refactoring/customerInfo.txt"));
+			while (file.hasNextLine()) {
+				String data = file.nextLine();
+				if (data.contains("PPS number")) {
+					String[] split = data.split("= ");
+					pps = split[1];
+				} else if (data.contains("Surname")) {
+					String[] split1 = data.split("= ");
+					surName = split1[1];
+				} else if (data.contains("First Name")) {
+					String[] split2 = data.split("= ");
+					firstname = split2[1];
+				} else if (data.contains("Date of Birth")) {
+					String[] split3 = data.split("= ");
+					dob = split3[1];
+				} else if (data.contains("Customer ID")) {
+					String[] split4 = data.split("= ");
+					customerID = split4[1];
+				} else if (data.contains("Password")) {
+					String[] split5 = data.split("= ");
+					passWord = split5[1];
+				}
+
+				if (!pps.isEmpty() && !surName.isEmpty() && !firstname.isEmpty() && !dob.isEmpty()
+						&& !customerID.isEmpty() && !passWord.isEmpty()) {
+					customerList.add(new Customer(pps, surName, firstname, dob, customerID, passWord, accounts));
+
+					pps = "";
+					surName = "";
+					firstname = "";
+					dob = "";
+					customerID = "";
+					passWord = "";
+
+				} else {
+					// do nothing
+				}
+
+			}
+			file.close();
+		} catch (FileNotFoundException fileNotFound) {
+			fileNotFound.printStackTrace();
+		}
+
+	}
+
 }
