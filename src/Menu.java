@@ -778,13 +778,16 @@ public class Menu extends JFrame implements IResponses {
 					listAll = new JButton("List all Customer");
 					findAccNum = new JButton("Find By Account Number");
 					findBySurname = new JButton("Find By Surname");
+					
+				    customersInfo(firstNameTextField, surnameTextField, ppsTextField,
+				    		dobTextField, customerIDTextField, passwordTextField, position);
 
-					firstNameTextField.setText(customerList.get(0).getFirstName());
-					surnameTextField.setText(customerList.get(0).getSurname());
-					ppsTextField.setText(customerList.get(0).getPPS());
-					dobTextField.setText(customerList.get(0).getDOB());
-					customerIDTextField.setText(customerList.get(0).getCustomerID());
-					passwordTextField.setText(customerList.get(0).getPassword());
+//					firstNameTextField.setText(customerList.get(0).getFirstName());
+//					surnameTextField.setText(customerList.get(0).getSurname());
+//					ppsTextField.setText(customerList.get(0).getPPS());
+//					dobTextField.setText(customerList.get(0).getDOB());
+//					customerIDTextField.setText(customerList.get(0).getCustomerID());
+//					passwordTextField.setText(customerList.get(0).getPassword());
 
 					firstNameTextField.setEditable(false);
 					surnameTextField.setEditable(false);
