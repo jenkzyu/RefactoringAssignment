@@ -114,15 +114,7 @@ public class Menu extends JFrame {
 		 * are a new customer, or will ask them to log in if they are an existing
 		 * customer or admin.
 		 */
-
-		f = new JFrame("User Type");
-		f.setSize(400, 300);
-		f.setLocation(200, 200);
-		f.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent we) {
-				System.exit(0);
-			}
-		});
+		f = frame("User Type");
 
 		JPanel userTypePanel = new JPanel();
 		final ButtonGroup userType = new ButtonGroup();
@@ -181,15 +173,7 @@ public class Menu extends JFrame {
 
 	public void admin() {
 		dispose();
-
-		f = new JFrame("Administrator Menu");
-		f.setSize(400, 400);
-		f.setLocation(200, 200);
-		f.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent we) {
-				System.exit(0);
-			}
-		});
+		f = frame("Administrator Menu");
 		f.setVisible(true);
 
 		JPanel deleteCustomerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -244,7 +228,7 @@ public class Menu extends JFrame {
 		JLabel label1 = new JLabel("Please select an option");
 
 		content = f.getContentPane();
-		content.setLayout(new GridLayout(10, 1));
+		content.setLayout(new GridLayout(11, 1));
 		content.add(label1);
 		content.add(accountPanel);
 		content.add(bankChargesPanel);
@@ -254,7 +238,7 @@ public class Menu extends JFrame {
 		content.add(navigatePanel);
 		content.add(summaryPanel);
 		content.add(deleteCustomerPanel);
-		// content.add(deleteAccountPanel);
+		content.add(deleteAccountPanel);
 		content.add(returnPanel);
 
 		bankChargesButton.addActionListener(new ActionListener() {
@@ -297,14 +281,8 @@ public class Menu extends JFrame {
 							}
 						} else {
 							f.dispose();
-							f = new JFrame("Administrator Menu");
-							f.setSize(400, 300);
-							f.setLocation(200, 200);
-							f.addWindowListener(new WindowAdapter() {
-								public void windowClosing(WindowEvent we) {
-									System.exit(0);
-								}
-							});
+							f =frame("Administrator Menu");
+
 							f.setVisible(true);
 
 							JComboBox<String> box = new JComboBox<String>();
@@ -428,14 +406,7 @@ public class Menu extends JFrame {
 							}
 						} else {
 							f.dispose();
-							f = new JFrame("Administrator Menu");
-							f.setSize(400, 300);
-							f.setLocation(200, 200);
-							f.addWindowListener(new WindowAdapter() {
-								public void windowClosing(WindowEvent we) {
-									System.exit(0);
-								}
-							});
+							f = frame("Administrator Menu");
 							f.setVisible(true);
 
 							JComboBox<String> box = new JComboBox<String>();
@@ -490,9 +461,7 @@ public class Menu extends JFrame {
 												// [StackOverflow] any
 												// number + an optional decimal number
 												// but can still take any number
-												if (!inputOverdraft.matches("[0-9]*\\.?[0-9]*$"))// Making sure password
-																									// is 7
-																									// characters
+												if (!inputOverdraft.matches("[0-9]*\\.?[0-9]*$"))
 												{
 													JOptionPane.showMessageDialog(null, "Please input overdraft",
 															"Error", JOptionPane.OK_OPTION);
@@ -569,14 +538,7 @@ public class Menu extends JFrame {
 							}
 						} else {
 							f.dispose();
-							f = new JFrame("Administrator Menu");
-							f.setSize(400, 300);
-							f.setLocation(200, 200);
-							f.addWindowListener(new WindowAdapter() {
-								public void windowClosing(WindowEvent we) {
-									System.exit(0);
-								}
-							});
+							f=frame("Administrator Menu");
 							f.setVisible(true);
 
 							JComboBox<String> box = new JComboBox<String>();
@@ -624,19 +586,10 @@ public class Menu extends JFrame {
 										boolean loop = true;
 
 										while (loop) {
+											//the isNumeric method tests to see if the string entered is numeric.
 											String interestString = JOptionPane.showInputDialog(f,
-													"Enter interest percentage you wish to apply: \n NOTE: Please enter a numerical value. (with no percentage sign) \n E.g: If you wish to apply 8% interest, enter '8'");// the
-																																																							// isNumeric
-																																																							// method
-																																																							// tests
-																																																							// to
-																																																							// see
-																																																							// if
-																																																							// the
-																																																							// string
-																																																							// entered
-																																																							// was
-																																																							// numeric.
+													"Enter interest percentage you wish to apply: \n NOTE: Please enter a numerical value. (with no percentage sign) \n E.g: If you wish to apply 8% interest, enter '8'");
+											
 											if (isNumeric(interestString)) {
 
 												interest = Double.parseDouble(interestString);
@@ -722,16 +675,7 @@ public class Menu extends JFrame {
 					}
 
 					f.dispose();
-
-					f.dispose();
-					f = new JFrame("Administrator Menu");
-					f.setSize(400, 300);
-					f.setLocation(200, 200);
-					f.addWindowListener(new WindowAdapter() {
-						public void windowClosing(WindowEvent we) {
-							System.exit(0);
-						}
-					});
+					f = frame("Administrator Menu");
 
 					firstNameLabel = new JLabel("First Name:", SwingConstants.LEFT);
 					surnameLabel = new JLabel("Surname:", SwingConstants.LEFT);
@@ -817,15 +761,8 @@ public class Menu extends JFrame {
 		summaryButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				f.dispose();
+				f = frame("Summary of Transactions");
 
-				f = new JFrame("Summary of Transactions");
-				f.setSize(400, 700);
-				f.setLocation(200, 200);
-				f.addWindowListener(new WindowAdapter() {
-					public void windowClosing(WindowEvent we) {
-						System.exit(0);
-					}
-				});
 				f.setVisible(true);
 
 				JLabel label1 = new JLabel("Summary of all transactions: ");
@@ -1041,14 +978,7 @@ public class Menu extends JFrame {
 					listAll.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
 							// f.dispose();
-							f = new JFrame("List of all Customers");
-							f.setSize(400, 300);
-							f.setLocation(200, 200);
-							f.addWindowListener(new WindowAdapter() {
-								public void windowClosing(WindowEvent we) {
-									System.exit(0);
-								}
-							});
+							f = frame("List of all Customers");
 							f.setVisible(true);
 
 							String[] column = { "PPS", "Surname", "Firstname", "DOB", "Customer ID" };
@@ -1140,8 +1070,7 @@ public class Menu extends JFrame {
 									// Making sure that user only inputs and takes number. Regex [StackOverflow] any
 									// number + an optional decimal number
 									// but can still take any number
-									if (!inputOverdraft.matches("[0-9]*\\.?[0-9]*$"))// Making sure password is 7
-																						// characters
+									if (!inputOverdraft.matches("[0-9]*\\.?[0-9]*$"))
 									{
 										JOptionPane.showMessageDialog(null, "Please input overdraft", "Error",
 												JOptionPane.OK_OPTION);
@@ -1283,7 +1212,6 @@ public class Menu extends JFrame {
 						// the account had a balance of 0 then it would be deleted. (I do not have time
 						// to do this)
 					}
-
 				}
 			}
 
@@ -1297,15 +1225,8 @@ public class Menu extends JFrame {
 	}
 
 	public void customer(Customer e1) {
-		f = new JFrame("Customer Menu");
+		f = frame("Customer Menu");
 		e = e1;
-		f.setSize(400, 300);
-		f.setLocation(200, 200);
-		f.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent we) {
-				System.exit(0);
-			}
-		});
 		f.setVisible(true);
 
 		if (e.getAccounts().size() == 0) {
@@ -1357,14 +1278,8 @@ public class Menu extends JFrame {
 
 					f.dispose();
 
-					f = new JFrame("Customer Menu");
-					f.setSize(400, 300);
-					f.setLocation(200, 200);
-					f.addWindowListener(new WindowAdapter() {
-						public void windowClosing(WindowEvent we) {
-							System.exit(0);
-						}
-					});
+					f = frame("Customer Menu");
+
 					f.setVisible(true);
 
 					JPanel statementPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -1400,14 +1315,8 @@ public class Menu extends JFrame {
 					statementButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
 							f.dispose();
-							f = new JFrame("Customer Menu");
-							f.setSize(400, 600);
-							f.setLocation(200, 200);
-							f.addWindowListener(new WindowAdapter() {
-								public void windowClosing(WindowEvent we) {
-									System.exit(0);
-								}
-							});
+							f = frame("Customer Menu");
+							
 							f.setVisible(true);
 
 							JLabel label1 = new JLabel("Summary of account transactions: ");
@@ -1571,10 +1480,9 @@ public class Menu extends JFrame {
 
 							}
 							if (on == true) {
+								// the isNumeric method tests to see if the string entered was numeric.
 								String balanceTest = JOptionPane.showInputDialog(f,
-										"Enter amount you wish to withdraw (max 500):");// the isNumeric method tests to
-																						// see if the string entered was
-																						// numeric.
+										"Enter amount you wish to withdraw (max 500):");
 								if (isNumeric(balanceTest)) {
 
 									withdraw = Double.parseDouble(balanceTest);
@@ -1668,9 +1576,8 @@ public class Menu extends JFrame {
 			Object customerID = JOptionPane.showInputDialog(f, "Enter Customer ID:");
 
 			for (Customer aCustomer : customerList) {
-
-				if (aCustomer.getCustomerID().equals(customerID))// search customer list for matching
-																	// customer ID
+				//search customer list for matching customer ID
+				if (aCustomer.getCustomerID().equals(customerID))
 				{
 					found = true;
 					customer = aCustomer;
@@ -1723,14 +1630,8 @@ public class Menu extends JFrame {
 
 	private void createCustomer() {
 		f.dispose();
-		f1 = new JFrame("Create New Customer");
-		f1.setSize(400, 300);
-		f1.setLocation(200, 200);
-		f1.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent we) {
-				System.exit(0);
-			}
-		});
+		f1 = frame("Create New Customer");
+		
 		Container content = f1.getContentPane();
 		content.setLayout(new BorderLayout());
 
@@ -1767,26 +1668,6 @@ public class Menu extends JFrame {
 				CustomerID = "ID" + PPS;
 
 				ArrayList<String> custID = new ArrayList<String>();
-				// got rid of the add to avoid clicking twice
-//				add.addActionListener(new ActionListener() {
-//					public void actionPerformed(ActionEvent e) {
-
-//				boolean validateString = true;
-//				while (validateString) {
-//					// password = JOptionPane.showInputDialog(f, "Enter 7 character Password;");
-//
-//					if (firstNameTextField.getText().length() > 20)
-//					{
-//						//validateString = false;
-//						JOptionPane.showMessageDialog(null, null, "Firstname must not exceed 20 charatcers long",
-//								JOptionPane.OK_OPTION);
-//						menuStart();
-////						validateString = false;
-//					} else {
-//						 validateString = false;
-//						
-//					}
-//				}
 
 				f1.dispose();
 
@@ -1849,10 +1730,7 @@ public class Menu extends JFrame {
 					menuStart();
 
 				}
-				// f.dispose(); // got rid of this because it destroys the main frame will
-				// result on null instance.
-//					}
-//				});
+
 			}
 		});
 		JButton cancel = new JButton("Cancel");
@@ -1933,6 +1811,18 @@ public class Menu extends JFrame {
 		customerIDTextField.setText(customerList.get(position).getCustomerID());
 		passwordTextField.setText(customerList.get(position).getPassword());
 
+	}
+	
+	public JFrame frame(String frame) {
+		JFrame f = new JFrame(frame);
+		f.setSize(400, 400);
+		f.setLocation(200, 200);
+		f.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent we) {
+				System.exit(0);
+			}
+		});
+		return f;
 	}
 
 	public static boolean isNumeric(String str) // a method that tests if a string is numeric
