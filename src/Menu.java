@@ -17,7 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
-public class Menu extends JFrame {
+public class Menu extends JFrame implements IResponses {
 
 	private static ArrayList<Customer> customerList = new ArrayList<Customer>();
 	private int position = 0;
@@ -99,7 +99,7 @@ public class Menu extends JFrame {
 				if (user.equals("Administrator"))
 
 				{
-					adminUser();
+					adminLogin();
 				}
 
 				// if user selects CUSTOMER
@@ -194,10 +194,7 @@ public class Menu extends JFrame {
 				boolean found = false;
 
 				if (customerList.isEmpty()) {
-					JOptionPane.showMessageDialog(f, "There are no customers yet!", "Oops!",
-							JOptionPane.INFORMATION_MESSAGE);
-					f.dispose();
-					admin();
+					noCustomersFound(f);
 
 				} else {
 					while (loop) {
@@ -253,11 +250,8 @@ public class Menu extends JFrame {
 							content.add(buttonPanel);
 
 							if (customer.getAccounts().isEmpty()) {
-								JOptionPane.showMessageDialog(f,
-										"This customer has no accounts! \n The admin must add acounts to this customer.",
-										"Oops!", JOptionPane.INFORMATION_MESSAGE);
-								f.dispose();
-								admin();
+								noAccounts(f);
+							
 							} else {
 
 								for (int i = 0; i < customer.getAccounts().size(); i++) {
@@ -319,10 +313,7 @@ public class Menu extends JFrame {
 				boolean found = false;
 
 				if (customerList.isEmpty()) {
-					JOptionPane.showMessageDialog(f, "There are no customers yet!", "Oops!",
-							JOptionPane.INFORMATION_MESSAGE);
-					f.dispose();
-					admin();
+					noCustomersFound(f);
 
 				} else {
 					while (loop) {
@@ -378,11 +369,7 @@ public class Menu extends JFrame {
 							content.add(buttonPanel);
 
 							if (customer.getAccounts().isEmpty()) {
-								JOptionPane.showMessageDialog(f,
-										"This customer has no accounts! \n The admin must add acounts to this customer.",
-										"Oops!", JOptionPane.INFORMATION_MESSAGE);
-								f.dispose();
-								admin();
+								noAccounts(f);
 							} else {
 
 								for (int i = 0; i < customer.getAccounts().size(); i++) {
@@ -451,11 +438,7 @@ public class Menu extends JFrame {
 				boolean found = false;
 
 				if (customerList.isEmpty()) {
-					JOptionPane.showMessageDialog(f, "There are no customers yet!", "Oops!",
-							JOptionPane.INFORMATION_MESSAGE);
-					f.dispose();
-					admin();
-
+					noCustomersFound(f);
 				} else {
 					while (loop) {
 						Object customerID = JOptionPane.showInputDialog(f,
@@ -511,11 +494,7 @@ public class Menu extends JFrame {
 							content.add(buttonPanel);
 
 							if (customer.getAccounts().isEmpty()) {
-								JOptionPane.showMessageDialog(f,
-										"This customer has no accounts! \n The admin must add acounts to this customer.",
-										"Oops!", JOptionPane.INFORMATION_MESSAGE);
-								f.dispose();
-								admin();
+								noAccounts(f);
 							} else {
 
 								for (int i = 0; i < customer.getAccounts().size(); i++) {
@@ -584,10 +563,7 @@ public class Menu extends JFrame {
 				boolean found = false;
 
 				if (customerList.isEmpty()) {
-					JOptionPane.showMessageDialog(f, "There are no customers yet!", "Oops!",
-							JOptionPane.INFORMATION_MESSAGE);
-					f.dispose();
-					admin();
+					noCustomersFound(f);
 
 				} else {
 
@@ -962,10 +938,7 @@ public class Menu extends JFrame {
 				f.dispose();
 
 				if (customerList.isEmpty()) {
-					JOptionPane.showMessageDialog(f, "There are no customers yet!", "Oops!",
-							JOptionPane.INFORMATION_MESSAGE);
-					f.dispose();
-					admin();
+					noCustomersFound(f);
 				} else {
 					boolean loop = true;
 
@@ -1174,11 +1147,7 @@ public class Menu extends JFrame {
 		f.setVisible(true);
 
 		if (customer.getAccounts().size() == 0) {
-			JOptionPane.showMessageDialog(f,
-					"This customer does not have any accounts yet. \n An admin must create an account for this customer \n for them to be able to use customer functionality. ",
-					"Oops!", JOptionPane.INFORMATION_MESSAGE);
-			f.dispose();
-			menuStart();
+			noAccounts(f);
 		} else {
 			JPanel buttonPanel = new JPanel();
 			JPanel boxPanel = new JPanel();
@@ -1695,7 +1664,7 @@ public class Menu extends JFrame {
 
 	}
 
-	private void adminUser() {
+	private void adminLogin() {
 		boolean loop = true, loop2 = true;
 		boolean cont = false;
 		while (loop) {
@@ -1757,17 +1726,6 @@ public class Menu extends JFrame {
 
 	}
 	
-	public JFrame frame(String frame) {
-		JFrame f = new JFrame(frame);
-		f.setSize(400, 400);
-		f.setLocation(200, 200);
-		f.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent we) {
-				System.exit(0);
-			}
-		});
-		return f;
-	}
 
 	public static boolean isNumeric(String str) // a method that tests if a string is numeric
 	{
@@ -1828,6 +1786,39 @@ public class Menu extends JFrame {
 			fileNotFound.printStackTrace();
 		}
 
+	}
+
+	
+	@Override
+	public JFrame frame(String frame) {
+		JFrame f = new JFrame(frame);
+		f.setSize(400, 400);
+		f.setLocation(200, 200);
+		f.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent we) {
+				System.exit(0);
+			}
+		});
+		return f;
+		
+	}
+
+	@Override
+	public void noCustomersFound(JFrame notFound) {
+		JOptionPane.showMessageDialog(f, "There are no customers yet!", "Oops!",
+				JOptionPane.INFORMATION_MESSAGE);
+		f.dispose();
+		admin();
+		
+	}
+	
+	@Override
+	public void noAccounts(JFrame noAccounts) {
+		JOptionPane.showMessageDialog(f,
+				"This customer has no accounts! \n The admin must add accFJounts to this customer.",
+				"Oops!", JOptionPane.INFORMATION_MESSAGE);
+		f.dispose();
+		admin();
 	}
 
 }
