@@ -1226,12 +1226,12 @@ public class Menu extends JFrame {
 		});
 	}
 
-	public void customer(Customer e1) {
+	public void customer(Customer customer) {
 		f = frame("Customer Menu");
 		//e = e1;
 		f.setVisible(true);
 
-		if (e1.getAccounts().size() == 0) {
+		if (customer.getAccounts().size() == 0) {
 			JOptionPane.showMessageDialog(f,
 					"This customer does not have any accounts yet. \n An admin must create an account for this customer \n for them to be able to use customer functionality. ",
 					"Oops!", JOptionPane.INFORMATION_MESSAGE);
@@ -1251,13 +1251,13 @@ public class Menu extends JFrame {
 			buttonPanel.add(continueButton);
 
 			JComboBox<String> box = new JComboBox<String>();
-			for (int i = 0; i < e1.getAccounts().size(); i++) {
-				box.addItem(e1.getAccounts().get(i).getNumber());
+			for (int i = 0; i < customer.getAccounts().size(); i++) {
+				box.addItem(customer.getAccounts().get(i).getNumber());
 			}
 
-			for (int i = 0; i < e1.getAccounts().size(); i++) {
-				if (e1.getAccounts().get(i).getNumber() == box.getSelectedItem()) {
-					acc = e1.getAccounts().get(i);
+			for (int i = 0; i < customer.getAccounts().size(); i++) {
+				if (customer.getAccounts().get(i).getNumber() == box.getSelectedItem()) {
+					acc = customer.getAccounts().get(i);
 				}
 			}
 
@@ -1356,7 +1356,7 @@ public class Menu extends JFrame {
 							returnButton.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent ae) {
 									f.dispose();
-									customer(e1);
+									customer(customer);
 								}
 							});
 						}
@@ -1379,7 +1379,7 @@ public class Menu extends JFrame {
 												"Pin entered incorrectly 3 times. ATM card locked.", "Pin",
 												JOptionPane.INFORMATION_MESSAGE);
 										((CustomerCurrentAccount) acc).getAtm().setValid(false);
-										customer(e1);
+										customer(customer);
 										loop = false;
 										on = false;
 									}
@@ -1455,7 +1455,7 @@ public class Menu extends JFrame {
 												"Pin entered incorrectly 3 times. ATM card locked.", "Pin",
 												JOptionPane.INFORMATION_MESSAGE);
 										((CustomerCurrentAccount) acc).getAtm().setValid(false);
-										customer(e1);
+										customer(customer);
 										loop = false;
 										on = false;
 									}
