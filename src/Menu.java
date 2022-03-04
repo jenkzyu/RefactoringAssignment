@@ -25,12 +25,11 @@ public class Menu extends JFrame {
 	private Customer customer = null;
 	private CustomerAccount acc = new CustomerAccount();
 	JFrame f, f1;
-	JLabel firstNameLabel, surnameLabel, pPPSLabel, dOBLabel;
+	JLabel firstNameLabel, surnameLabel, ppsLabel, dobLabel, customerIDLabel, passwordLabel;
 	JTextField firstNameTextField, surnameTextField, pPSTextField, dOBTextField;
-	JLabel customerIDLabel, passwordLabel;
 	JTextField customerIDTextField, passwordTextField;
 	Container content;
-	Customer e;
+	//Customer e1;
 
 	JPanel panel2;
 	JButton add;
@@ -115,7 +114,8 @@ public class Menu extends JFrame {
 		 * customer or admin.
 		 */
 		f = frame("User Type");
-
+		
+		
 		JPanel userTypePanel = new JPanel();
 		final ButtonGroup userType = new ButtonGroup();
 		JRadioButton radioButton;
@@ -139,6 +139,8 @@ public class Menu extends JFrame {
 		content.setLayout(new GridLayout(2, 1));
 		content.add(userTypePanel);
 		content.add(continuePanel);
+		
+		
 
 		continueButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -679,8 +681,8 @@ public class Menu extends JFrame {
 
 					firstNameLabel = new JLabel("First Name:", SwingConstants.LEFT);
 					surnameLabel = new JLabel("Surname:", SwingConstants.LEFT);
-					pPPSLabel = new JLabel("PPS Number:", SwingConstants.LEFT);
-					dOBLabel = new JLabel("Date of birth", SwingConstants.LEFT);
+					ppsLabel = new JLabel("PPS Number:", SwingConstants.LEFT);
+					dobLabel = new JLabel("Date of birth", SwingConstants.LEFT);
 					customerIDLabel = new JLabel("CustomerID:", SwingConstants.LEFT);
 					passwordLabel = new JLabel("Password:", SwingConstants.LEFT);
 					firstNameTextField = new JTextField(20);
@@ -698,9 +700,9 @@ public class Menu extends JFrame {
 					textPanel.add(firstNameTextField);
 					textPanel.add(surnameLabel);
 					textPanel.add(surnameTextField);
-					textPanel.add(pPPSLabel);
+					textPanel.add(ppsLabel);
 					textPanel.add(pPSTextField);
-					textPanel.add(dOBLabel);
+					textPanel.add(dobLabel);
 					textPanel.add(dOBTextField);
 					textPanel.add(customerIDLabel);
 					textPanel.add(customerIDTextField);
@@ -838,8 +840,8 @@ public class Menu extends JFrame {
 
 					firstNameLabel = new JLabel("First Name:", SwingConstants.LEFT);
 					surnameLabel = new JLabel("Surname:", SwingConstants.LEFT);
-					pPPSLabel = new JLabel("PPS Number:", SwingConstants.LEFT);
-					dOBLabel = new JLabel("Date of birth", SwingConstants.LEFT);
+					ppsLabel = new JLabel("PPS Number:", SwingConstants.LEFT);
+					dobLabel = new JLabel("Date of birth", SwingConstants.LEFT);
 					customerIDLabel = new JLabel("CustomerID:", SwingConstants.LEFT);
 					passwordLabel = new JLabel("Password:", SwingConstants.LEFT);
 					firstNameTextField = new JTextField(20);
@@ -876,9 +878,9 @@ public class Menu extends JFrame {
 					gridPanel.add(firstNameTextField);
 					gridPanel.add(surnameLabel);
 					gridPanel.add(surnameTextField);
-					gridPanel.add(pPPSLabel);
+					gridPanel.add(ppsLabel);
 					gridPanel.add(pPSTextField);
-					gridPanel.add(dOBLabel);
+					gridPanel.add(dobLabel);
 					gridPanel.add(dOBTextField);
 					gridPanel.add(customerIDLabel);
 					gridPanel.add(customerIDTextField);
@@ -1226,10 +1228,10 @@ public class Menu extends JFrame {
 
 	public void customer(Customer e1) {
 		f = frame("Customer Menu");
-		e = e1;
+		//e = e1;
 		f.setVisible(true);
 
-		if (e.getAccounts().size() == 0) {
+		if (e1.getAccounts().size() == 0) {
 			JOptionPane.showMessageDialog(f,
 					"This customer does not have any accounts yet. \n An admin must create an account for this customer \n for them to be able to use customer functionality. ",
 					"Oops!", JOptionPane.INFORMATION_MESSAGE);
@@ -1249,13 +1251,13 @@ public class Menu extends JFrame {
 			buttonPanel.add(continueButton);
 
 			JComboBox<String> box = new JComboBox<String>();
-			for (int i = 0; i < e.getAccounts().size(); i++) {
-				box.addItem(e.getAccounts().get(i).getNumber());
+			for (int i = 0; i < e1.getAccounts().size(); i++) {
+				box.addItem(e1.getAccounts().get(i).getNumber());
 			}
 
-			for (int i = 0; i < e.getAccounts().size(); i++) {
-				if (e.getAccounts().get(i).getNumber() == box.getSelectedItem()) {
-					acc = e.getAccounts().get(i);
+			for (int i = 0; i < e1.getAccounts().size(); i++) {
+				if (e1.getAccounts().get(i).getNumber() == box.getSelectedItem()) {
+					acc = e1.getAccounts().get(i);
 				}
 			}
 
@@ -1354,7 +1356,7 @@ public class Menu extends JFrame {
 							returnButton.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent ae) {
 									f.dispose();
-									customer(e);
+									customer(e1);
 								}
 							});
 						}
@@ -1377,7 +1379,7 @@ public class Menu extends JFrame {
 												"Pin entered incorrectly 3 times. ATM card locked.", "Pin",
 												JOptionPane.INFORMATION_MESSAGE);
 										((CustomerCurrentAccount) acc).getAtm().setValid(false);
-										customer(e);
+										customer(e1);
 										loop = false;
 										on = false;
 									}
@@ -1453,7 +1455,7 @@ public class Menu extends JFrame {
 												"Pin entered incorrectly 3 times. ATM card locked.", "Pin",
 												JOptionPane.INFORMATION_MESSAGE);
 										((CustomerCurrentAccount) acc).getAtm().setValid(false);
-										customer(e);
+										customer(e1);
 										loop = false;
 										on = false;
 									}
@@ -1637,8 +1639,8 @@ public class Menu extends JFrame {
 
 		firstNameLabel = new JLabel("First Name:", SwingConstants.RIGHT);
 		surnameLabel = new JLabel("Surname:", SwingConstants.RIGHT);
-		pPPSLabel = new JLabel("PPS Number:", SwingConstants.RIGHT);
-		dOBLabel = new JLabel("Date of birth", SwingConstants.RIGHT);
+		ppsLabel = new JLabel("PPS Number:", SwingConstants.RIGHT);
+		dobLabel = new JLabel("Date of birth", SwingConstants.RIGHT);
 		firstNameTextField = new JTextField(20);
 		surnameTextField = new JTextField(20);
 		pPSTextField = new JTextField(20);
@@ -1648,9 +1650,9 @@ public class Menu extends JFrame {
 		panel.add(firstNameTextField);
 		panel.add(surnameLabel);
 		panel.add(surnameTextField);
-		panel.add(pPPSLabel);
+		panel.add(ppsLabel);
 		panel.add(pPSTextField);
-		panel.add(dOBLabel);
+		panel.add(dobLabel);
 		panel.add(dOBTextField);
 
 		panel2 = new JPanel();
