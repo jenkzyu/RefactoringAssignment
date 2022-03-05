@@ -206,7 +206,7 @@ public class Menu extends JFrame implements IResponses {
 						}
 
 						if (found == false) {
-							int reply = onFailure( "Try Again?", "User not found");
+							int reply = onFailure("Try Again?", "User not found");
 							if (reply == JOptionPane.YES_OPTION) {
 								loop = true;
 							} else if (reply == JOptionPane.NO_OPTION) {
@@ -259,23 +259,16 @@ public class Menu extends JFrame implements IResponses {
 										String euro = "\u20ac";
 
 										if (acc instanceof CustomerDepositAccount) {
-
-											JOptionPane.showMessageDialog(f,
-													"25" + euro + " deposit account fee aplied.", "",
-													JOptionPane.INFORMATION_MESSAGE);
+											showMessage(euro + "25" + " deposit account fee applied", "Success!");
 											acc.setBalance(acc.getBalance() - 25);
-											JOptionPane.showMessageDialog(f, "New balance = " + acc.getBalance(),
-													"Success!", JOptionPane.INFORMATION_MESSAGE);
+											showMessage("New balance = " + acc.getBalance(), "Success!");
+
 										}
 
 										if (acc instanceof CustomerCurrentAccount) {
-
-											JOptionPane.showMessageDialog(f,
-													"15" + euro + " current account fee aplied.", "",
-													JOptionPane.INFORMATION_MESSAGE);
+											showMessage(euro + "15" + "current account fee applied.", "Success!");
 											acc.setBalance(acc.getBalance() - 25);
-											JOptionPane.showMessageDialog(f, "New balance = " + acc.getBalance(),
-													"Success!", JOptionPane.INFORMATION_MESSAGE);
+											showMessage("New balance = " + acc.getBalance(), "Success!");
 										}
 
 										f.dispose();
@@ -323,7 +316,7 @@ public class Menu extends JFrame implements IResponses {
 						}
 
 						if (found == false) {
-							int reply = onFailure( "Try Again?", "User not found");
+							int reply = onFailure("Try Again?", "User not found");
 							if (reply == JOptionPane.YES_OPTION) {
 								loop = true;
 							} else if (reply == JOptionPane.NO_OPTION) {
@@ -392,10 +385,11 @@ public class Menu extends JFrame implements IResponses {
 													validInput = false;
 													overdraft = Double.parseDouble(inputOverdraft);
 													((CustomerCurrentAccount) acc).setOverdraft(overdraft);
-													JOptionPane.showMessageDialog(f,
+													showMessage(
 															"New overdraft = "
 																	+ ((CustomerCurrentAccount) acc).getOverdraft(),
-															"Success!", JOptionPane.INFORMATION_MESSAGE);
+															"Success!");
+//													
 												}
 											}
 
@@ -445,7 +439,7 @@ public class Menu extends JFrame implements IResponses {
 						}
 
 						if (found == false) {
-							int reply = onFailure( "Try Again?", "User not found");
+							int reply = onFailure("Try Again?", "User not found");
 							if (reply == JOptionPane.YES_OPTION) {
 								loop = true;
 							} else if (reply == JOptionPane.NO_OPTION) {
@@ -512,15 +506,13 @@ public class Menu extends JFrame implements IResponses {
 												acc.setBalance(
 														acc.getBalance() + (acc.getBalance() * (interest / 100)));
 
-												JOptionPane.showMessageDialog(f,
-														interest + "% interest applied. \n new balance = "
-																+ acc.getBalance() + euro,
-														"Success!", JOptionPane.INFORMATION_MESSAGE);
+												showMessage(interest + "% interest applied. \n new balance = " + euro
+														+ acc.getBalance(), "Success!");
 											}
 
 											else {
-												JOptionPane.showMessageDialog(f, "You must enter a numerical value!",
-														"Oops!", JOptionPane.INFORMATION_MESSAGE);
+
+												showMessage("You must enter a numerical value!", "Oops!");
 											}
 
 										}
@@ -567,7 +559,7 @@ public class Menu extends JFrame implements IResponses {
 						}
 
 						if (found == false) {
-							int reply = onFailure( "Try Again?", "User not found");
+							int reply = onFailure("Try Again?", "User not found");
 							if (reply == JOptionPane.YES_OPTION) {
 								loop = true;
 							} else if (reply == JOptionPane.NO_OPTION) {
@@ -688,8 +680,7 @@ public class Menu extends JFrame implements IResponses {
 				JScrollPane scrollPane = new JScrollPane(textArea);
 				textPanel.add(scrollPane);
 				// For each customer, for each account, it displays each transaction.
-				for (int a = 0; a < customerList.size(); a++)
-				{
+				for (int a = 0; a < customerList.size(); a++) {
 					for (int b = 0; b < customerList.get(a).getAccounts().size(); b++) {
 						acc = customerList.get(a).getAccounts().get(b);
 						for (int c = 0; c < customerList.get(a).getAccounts().get(b).getTransactionList().size(); c++) {
@@ -851,7 +842,7 @@ public class Menu extends JFrame implements IResponses {
 								ArrayList<CustomerAccount> ac = ca.getAccounts();
 								for (int i = 0; i < ac.size(); i++) {
 									if (ac.get(i).getNumber().equalsIgnoreCase(input)) {
-										position = ac.size();
+										position = i;
 										customersInfo(firstNameTextField, surnameTextField, ppsTextField, dobTextField,
 												customerIDTextField, passwordTextField, position);
 									}
@@ -931,7 +922,7 @@ public class Menu extends JFrame implements IResponses {
 						}
 
 						if (found == false) {
-							int reply = onFailure( "Try Again?", "User not found");
+							int reply = onFailure("Try Again?", "User not found");
 							if (reply == JOptionPane.YES_OPTION) {
 								loop = true;
 							} else if (reply == JOptionPane.NO_OPTION) {
@@ -971,7 +962,7 @@ public class Menu extends JFrame implements IResponses {
 								// this simple algorithm generates the account number
 								String number = String.valueOf("C" + (customerList.indexOf(customer) + 1) * 10
 										+ (customer.getAccounts().size() + 1));
-																		
+
 								ArrayList<AccountTransaction> transactionList = new ArrayList<AccountTransaction>();
 								int randomPIN = (int) (Math.random() * 9000) + 1000;
 								String pin = String.valueOf(randomPIN);
@@ -983,10 +974,8 @@ public class Menu extends JFrame implements IResponses {
 
 								customer.getAccounts().add(current);
 								// show overdraft when admin adds an overdraft to the current account + balance.
-								JOptionPane.showMessageDialog(f,
-										"Account number = " + number + "\n PIN = " + pin + "\n Balance = " + balance
-												+ "\n Overdraft = " + overdraft,
-										"Account created.", JOptionPane.INFORMATION_MESSAGE);
+								showMessage("Account number = " + number + "\n PIN = " + pin + "\n Balance = " + balance
+										+ "\n Overdraft = " + overdraft, "Account created.");
 
 								f.dispose();
 								admin();
@@ -998,16 +987,14 @@ public class Menu extends JFrame implements IResponses {
 								// this simple algorithm generates the account number
 								String number = String.valueOf("D" + (customerList.indexOf(customer) + 1) * 10
 										+ (customer.getAccounts().size() + 1));
-																				
+
 								ArrayList<AccountTransaction> transactionList = new ArrayList<AccountTransaction>();
 
 								CustomerDepositAccount deposit = new CustomerDepositAccount(interest, number, balance,
 										transactionList);
 
 								customer.getAccounts().add(deposit);
-								JOptionPane.showMessageDialog(f, "Account number = " + number, "Account created.",
-										JOptionPane.INFORMATION_MESSAGE);
-
+								showMessage("Account number = " + number, "Account created.");
 								f.dispose();
 								admin();
 							}
@@ -1021,7 +1008,7 @@ public class Menu extends JFrame implements IResponses {
 		deleteCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				boolean found = true;
-				boolean	loop = true;
+				boolean loop = true;
 
 				if (customerList.isEmpty()) {
 					JOptionPane.showMessageDialog(null, "There are currently no customers to display. ");
@@ -1042,7 +1029,7 @@ public class Menu extends JFrame implements IResponses {
 						}
 
 						if (found == false) {
-							int reply = onFailure( "Try Again?", "User not found");
+							int reply = onFailure("Try Again?", "User not found");
 							if (reply == JOptionPane.YES_OPTION) {
 								loop = true;
 							} else if (reply == JOptionPane.NO_OPTION) {
@@ -1053,13 +1040,13 @@ public class Menu extends JFrame implements IResponses {
 							}
 						} else {
 							if (customer.getAccounts().size() > 0) {
-								JOptionPane.showMessageDialog(f,
+								showMessage(
 										"This customer has accounts. \n You must delete a customer's accounts before deleting a customer ",
-										"Oops!", JOptionPane.INFORMATION_MESSAGE);
+										"Oops!");
 							} else {
 								customerList.remove(customer);
-								JOptionPane.showMessageDialog(f, "Customer Deleted ", "Success.",
-										JOptionPane.INFORMATION_MESSAGE);
+								showMessage("Customer Deleted ", "Success.");
+
 							}
 						}
 
@@ -1085,7 +1072,7 @@ public class Menu extends JFrame implements IResponses {
 					}
 
 					if (found == false) {
-						int reply = onFailure( "Try Again?", "User not found");
+						int reply = onFailure("Try Again?", "User not found");
 						if (reply == JOptionPane.YES_OPTION) {
 							loop = true;
 						} else if (reply == JOptionPane.NO_OPTION) {
@@ -1254,9 +1241,7 @@ public class Menu extends JFrame implements IResponses {
 
 								while (loop) {
 									if (count == 0) {
-										JOptionPane.showMessageDialog(f,
-												"Pin entered incorrectly 3 times. ATM card locked.", "Pin",
-												JOptionPane.INFORMATION_MESSAGE);
+										showMessage("Pin entered incorrectly 3 times. ATM card locked.", "Pin");
 										((CustomerCurrentAccount) acc).getAtm().setValid(false);
 										customer(customer);
 										loop = false;
@@ -1269,14 +1254,12 @@ public class Menu extends JFrame implements IResponses {
 									if (on) {
 										if (checkPin == i) {
 											loop = false;
-											JOptionPane.showMessageDialog(f, "Pin entry successful", "Pin",
-													JOptionPane.INFORMATION_MESSAGE);
+											showMessage("Pin entry successful", "Pin");
 
 										} else {
 											count--;
-											JOptionPane.showMessageDialog(f,
-													"Incorrect pin. " + count + " attempts remaining.", "Pin",
-													JOptionPane.INFORMATION_MESSAGE);
+											showMessage("Incorrect pin. " + count + " attempts remaining.", "Pin");
+											
 										}
 
 									}
@@ -1292,8 +1275,8 @@ public class Menu extends JFrame implements IResponses {
 									loop = false;
 
 								} else {
-									JOptionPane.showMessageDialog(f, "You must enter a numerical value!", "Oops!",
-											JOptionPane.INFORMATION_MESSAGE);
+									showMessage("You must enter a numerical value!", "Oops!");
+			
 								}
 
 								String euro = "\u20ac";
@@ -1306,11 +1289,9 @@ public class Menu extends JFrame implements IResponses {
 
 								AccountTransaction transaction = new AccountTransaction(date2, type, amount);
 								acc.getTransactionList().add(transaction);
-
-								JOptionPane.showMessageDialog(f, balance + euro + " added do you account!", "Lodgement",
-										JOptionPane.INFORMATION_MESSAGE);
-								JOptionPane.showMessageDialog(f, "New balance = " + acc.getBalance() + euro,
-										"Lodgement", JOptionPane.INFORMATION_MESSAGE);
+								showMessage(balance + euro + " added do you account!", "Lodgement");
+								showMessage( "New balance = " + acc.getBalance() + euro,"Lodgement");
+								
 							}
 
 						}
@@ -1329,9 +1310,7 @@ public class Menu extends JFrame implements IResponses {
 
 								while (loop) {
 									if (count == 0) {
-										JOptionPane.showMessageDialog(f,
-												"Pin entered incorrectly 3 times. ATM card locked.", "Pin",
-												JOptionPane.INFORMATION_MESSAGE);
+										showMessage("Pin entered incorrectly 3 times. ATM card locked.", "Pin");
 										((CustomerCurrentAccount) acc).getAtm().setValid(false);
 										customer(customer);
 										loop = false;
@@ -1344,14 +1323,12 @@ public class Menu extends JFrame implements IResponses {
 									if (on) {
 										if (checkPin == i) {
 											loop = false;
-											JOptionPane.showMessageDialog(f, "Pin entry successful", "Pin",
-													JOptionPane.INFORMATION_MESSAGE);
+											showMessage("Pin entry successful", "Pin");
+											
 
 										} else {
 											count--;
-											JOptionPane.showMessageDialog(f,
-													"Incorrect pin. " + count + " attempts remaining.", "Pin",
-													JOptionPane.INFORMATION_MESSAGE);
+											showMessage("Incorrect pin. " + count + " attempts remaining.", "Pin");
 
 										}
 
@@ -1369,26 +1346,22 @@ public class Menu extends JFrame implements IResponses {
 									loop = false;
 
 								} else {
-									JOptionPane.showMessageDialog(f, "You must enter a numerical value!", "Oops!",
-											JOptionPane.INFORMATION_MESSAGE);
+									showMessage( "You must enter a numerical value!", "Oops!");
+									
 								}
 								if (withdraw > 500) {
-									JOptionPane.showMessageDialog(f, "500 is the maximum you can withdraw at a time.",
-											"Oops!", JOptionPane.INFORMATION_MESSAGE);
+									showMessage("500 is the maximum you can withdraw at a time.", "Oops!");
 									withdraw = 0;
 								}
 								// if the account is a Current Account
 								if (acc instanceof CustomerCurrentAccount) {
 									if (withdraw > acc.getBalance() + ((CustomerCurrentAccount) acc).getOverdraft()) {
-										JOptionPane.showMessageDialog(f,
-												"Insufficient funds overdraft amount exceeded.", "Error",
-												JOptionPane.INFORMATION_MESSAGE);
+										showMessage("Insufficient funds overdraft amount exceeded.", "Error");
 										((CustomerCurrentAccount) acc).setOverdraft(withdraw);
 									}
 								} else {
 									if (withdraw > acc.getBalance()) {
-										JOptionPane.showMessageDialog(f, "Insufficient funds.", "Oops!",
-												JOptionPane.INFORMATION_MESSAGE);
+										showMessage("Insufficient funds.", "Oops!");
 										withdraw = 0;
 									}
 								}
@@ -1400,10 +1373,9 @@ public class Menu extends JFrame implements IResponses {
 										if (withdraw < ((CustomerCurrentAccount) acc).getOverdraft()) {
 											((CustomerCurrentAccount) acc).setOverdraft(
 													((CustomerCurrentAccount) acc).getOverdraft() - withdraw);
-											JOptionPane.showMessageDialog(f,
-													"New balance = " + acc.getBalance() + euro + "\nOverdraft = "
-															+ ((CustomerCurrentAccount) acc).getOverdraft(),
-													"Withdraw", JOptionPane.INFORMATION_MESSAGE);
+											showMessage("New balance = " + acc.getBalance() + euro + "\nOverdraft = "
+													+ ((CustomerCurrentAccount) acc).getOverdraft(),
+											"Withdraw");
 
 										} else {
 											acc.setBalance(acc.getBalance() - withdraw);
@@ -1421,13 +1393,10 @@ public class Menu extends JFrame implements IResponses {
 
 								AccountTransaction transaction = new AccountTransaction(date2, type, amount);
 								acc.getTransactionList().add(transaction);
-
-								JOptionPane.showMessageDialog(f, withdraw + euro + " withdrawn.", "Withdraw",
-										JOptionPane.INFORMATION_MESSAGE);
-								JOptionPane.showMessageDialog(f,
-										"New balance = " + acc.getBalance() + euro + "\nOverdraft = "
-												+ ((CustomerCurrentAccount) acc).getOverdraft(),
-										"Withdraw", JOptionPane.INFORMATION_MESSAGE);
+								showMessage(withdraw + euro + " withdrawn.", "Withdraw");
+								showMessage("New balance = " + acc.getBalance() + euro + "\nOverdraft = "
+										+ ((CustomerCurrentAccount) acc).getOverdraft(),
+								"Withdraw");
 							}
 
 						}
@@ -1462,7 +1431,7 @@ public class Menu extends JFrame implements IResponses {
 			}
 
 			if (found == false) {
-				int reply = onFailure( "Try Again?", "User not found");
+				int reply = onFailure("Try Again?", "User not found");
 				if (reply == JOptionPane.YES_OPTION) {
 					loop = true;
 				} else if (reply == JOptionPane.NO_OPTION) {
@@ -1593,15 +1562,11 @@ public class Menu extends JFrame implements IResponses {
 						System.out.println("An error occurred.");
 						exception.printStackTrace();
 					}
-
-					JOptionPane.showMessageDialog(f, "CustomerID = " + CustomerID + "\n Password = " + password,
-							"Customer created.", JOptionPane.INFORMATION_MESSAGE);
-
+					showMessage("CustomerID = " + CustomerID + "\n Password = " + password,
+							"Customer created.");
 					menuStart();
 				} else {
-					JOptionPane.showMessageDialog(f, "Customer already exists.", "Error",
-							JOptionPane.INFORMATION_MESSAGE);
-
+					showMessage("Customer already exists.", "Error");
 					menuStart();
 
 				}
@@ -1632,8 +1597,7 @@ public class Menu extends JFrame implements IResponses {
 		while (loop) {
 			Object adminUsername = JOptionPane.showInputDialog(f, "Enter Administrator Username:");
 			// search admin list for admin with matching admin username
-			if (!adminUsername.equals("admin"))
-			{
+			if (!adminUsername.equals("admin")) {
 				int reply = onFailure("Try Again?", "Incorrect Username");
 				if (reply == JOptionPane.YES_OPTION) {
 					loop = true;
@@ -1650,8 +1614,7 @@ public class Menu extends JFrame implements IResponses {
 		while (loop2) {
 			Object adminPassword = JOptionPane.showInputDialog(f, "Enter Administrator Password;");
 			// search admin list for admin with matching admin password
-			if (!adminPassword.equals("admin11"))
-			{
+			if (!adminPassword.equals("admin11")) {
 				int reply = onFailure("Try Again?", "Incorrect Password");
 				if (reply == JOptionPane.YES_OPTION) {
 
@@ -1682,9 +1645,9 @@ public class Menu extends JFrame implements IResponses {
 		dOBTextField.setText(customerList.get(position).getDOB());
 		customerIDTextField.setText(customerList.get(position).getCustomerID());
 		passwordTextField.setText(customerList.get(position).getPassword());
-    
+
 	}
-    
+
 	public static boolean isNumeric(String str) // a method that tests if a string is numeric
 	{
 		try {
@@ -1779,9 +1742,14 @@ public class Menu extends JFrame implements IResponses {
 
 	@Override
 	public int onFailure(String message, String error) {
-		int reply = JOptionPane.showConfirmDialog(null, message, error,
-				JOptionPane.YES_NO_OPTION);
+		int reply = JOptionPane.showConfirmDialog(null, message, error, JOptionPane.YES_NO_OPTION);
 		return reply;
+	}
+
+	@Override
+	public void showMessage(String message, String anotherMessage) {
+		JOptionPane.showMessageDialog(f, message, anotherMessage, JOptionPane.INFORMATION_MESSAGE);
+
 	}
 
 }

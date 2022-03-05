@@ -6,6 +6,7 @@ public interface IResponses {
 	public void noCustomersFound(JFrame notFound);
 	public void noAccounts(JFrame noAccounts);
 	public int onFailure(String success, String message);
+	void showMessage(String message, String anotherMessage);
 	
 
 }
